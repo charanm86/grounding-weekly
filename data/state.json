@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "currentEditionId": "2026-09-30",
-  "lastSuccessfulRefresh": "2026-09-30T06:27:28Z",
+  "lastSuccessfulRefresh": "2026-09-30T07:07:06Z",
   "editions": [
     {
       "id": "2026-09-30",
@@ -9,13 +9,13 @@
       "name": "Weekly briefing - 2026-09-30",
       "origin": "collected",
       "outcome": "quiet",
-      "refreshedAt": "2026-09-30T06:27:28Z",
+      "refreshedAt": "2026-09-30T07:07:06Z",
       "windowStart": "2026-09-23T03:28:51Z",
-      "windowEnd": "2026-09-30T06:27:22Z",
+      "windowEnd": "2026-09-30T07:07:04Z",
       "coverage": [
         {
           "sourceId": "openai",
-          "checkedAt": "2026-09-30T06:27:22Z",
+          "checkedAt": "2026-09-30T07:07:04Z",
           "status": "ok",
           "entries": 1238,
           "eligible": 0,
@@ -29,7 +29,7 @@
         },
         {
           "sourceId": "google",
-          "checkedAt": "2026-09-30T06:27:22Z",
+          "checkedAt": "2026-09-30T07:07:04Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -43,20 +43,21 @@
         },
         {
           "sourceId": "microsoft",
-          "checkedAt": "2026-09-30T06:27:22Z",
+          "checkedAt": "2026-09-30T07:07:04Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
           "selected": 0,
           "rejected": {
-            "outsideWindow": 10
+            "offTopic": 4,
+            "outsideWindow": 6
           },
-          "bytes": 194465,
+          "bytes": 227316,
           "message": "Public feed retrieved and parsed."
         },
         {
           "sourceId": "brave",
-          "checkedAt": "2026-09-30T06:27:22Z",
+          "checkedAt": "2026-09-30T07:07:04Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
@@ -69,7 +70,7 @@
         },
         {
           "sourceId": "simon-willison",
-          "checkedAt": "2026-09-30T06:27:23Z",
+          "checkedAt": "2026-09-30T07:07:04Z",
           "status": "ok",
           "entries": 30,
           "eligible": 0,
@@ -83,7 +84,7 @@
         },
         {
           "sourceId": "one-useful-thing",
-          "checkedAt": "2026-09-30T06:27:24Z",
+          "checkedAt": "2026-09-30T07:07:04Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -96,7 +97,7 @@
         },
         {
           "sourceId": "ahead-of-ai",
-          "checkedAt": "2026-09-30T06:27:24Z",
+          "checkedAt": "2026-09-30T07:07:04Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -110,7 +111,7 @@
         },
         {
           "sourceId": "interconnects",
-          "checkedAt": "2026-09-30T06:27:25Z",
+          "checkedAt": "2026-09-30T07:07:04Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -123,21 +124,21 @@
         },
         {
           "sourceId": "latent-space",
-          "checkedAt": "2026-09-30T06:27:25Z",
+          "checkedAt": "2026-09-30T07:07:04Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
           "selected": 0,
           "rejected": {
-            "offTopic": 11,
-            "outsideWindow": 9
+            "offTopic": 10,
+            "outsideWindow": 10
           },
           "bytes": 1369493,
           "message": "Public feed retrieved and parsed."
         },
         {
           "sourceId": "towards-ai",
-          "checkedAt": "2026-09-30T06:27:26Z",
+          "checkedAt": "2026-09-30T07:07:05Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
@@ -150,7 +151,7 @@
         },
         {
           "sourceId": "data-science-collective",
-          "checkedAt": "2026-09-30T06:27:26Z",
+          "checkedAt": "2026-09-30T07:07:05Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
@@ -164,7 +165,7 @@
         },
         {
           "sourceId": "arxiv-ir",
-          "checkedAt": "2026-09-30T06:27:27Z",
+          "checkedAt": "2026-09-30T07:07:05Z",
           "status": "ok",
           "entries": 41,
           "eligible": 0,
