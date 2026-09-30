@@ -1,7 +1,7 @@
 {
   "schemaVersion": 2,
   "currentEditionId": "2026-09-30",
-  "lastSuccessfulRefresh": "2026-09-30T08:53:08Z",
+  "lastSuccessfulRefresh": "2026-09-30T08:58:26Z",
   "editions": [
     {
       "id": "2026-09-30",
@@ -9,19 +9,20 @@
       "name": "Weekly briefing - 2026-09-30",
       "origin": "collected",
       "outcome": "stories",
-      "refreshedAt": "2026-09-30T08:53:08Z",
+      "refreshedAt": "2026-09-30T08:58:26Z",
       "windowStart": "2026-09-23T03:28:51Z",
-      "windowEnd": "2026-09-30T08:53:03Z",
+      "windowEnd": "2026-09-30T08:58:14Z",
       "coverage": [
         {
           "sourceId": "openai",
-          "checkedAt": "2026-09-30T08:53:03Z",
+          "checkedAt": "2026-09-30T08:58:14Z",
           "status": "ok",
           "entries": 1238,
-          "eligible": 1,
-          "selected": 1,
+          "eligible": 0,
+          "selected": 0,
           "rejected": {
             "offTopic": 15,
+            "alreadyArchived": 1,
             "outsideWindow": 1222
           },
           "bytes": 755374,
@@ -29,34 +30,31 @@
         },
         {
           "sourceId": "google",
-          "checkedAt": "2026-09-30T08:53:03Z",
-          "status": "ok",
-          "entries": 20,
+          "checkedAt": "2026-09-30T08:58:14Z",
+          "status": "failed",
+          "entries": 0,
           "eligible": 0,
           "selected": 0,
-          "rejected": {
-            "offTopic": 5,
-            "outsideWindow": 15
-          },
-          "bytes": 508165,
-          "message": "Public feed retrieved and parsed."
+          "rejected": {},
+          "message": "TimeoutError: The read operation timed out"
         },
         {
           "sourceId": "microsoft",
-          "checkedAt": "2026-09-30T08:53:03Z",
+          "checkedAt": "2026-09-30T08:58:14Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
           "selected": 0,
           "rejected": {
-            "outsideWindow": 10
+            "offTopic": 4,
+            "outsideWindow": 6
           },
-          "bytes": 194465,
+          "bytes": 227316,
           "message": "Public feed retrieved and parsed."
         },
         {
           "sourceId": "brave",
-          "checkedAt": "2026-09-30T08:53:03Z",
+          "checkedAt": "2026-09-30T08:58:14Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
@@ -69,7 +67,7 @@
         },
         {
           "sourceId": "simon-willison",
-          "checkedAt": "2026-09-30T08:53:04Z",
+          "checkedAt": "2026-09-30T08:58:14Z",
           "status": "ok",
           "entries": 30,
           "eligible": 0,
@@ -83,7 +81,7 @@
         },
         {
           "sourceId": "one-useful-thing",
-          "checkedAt": "2026-09-30T08:53:05Z",
+          "checkedAt": "2026-09-30T08:58:14Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -96,7 +94,7 @@
         },
         {
           "sourceId": "ahead-of-ai",
-          "checkedAt": "2026-09-30T08:53:05Z",
+          "checkedAt": "2026-09-30T08:58:14Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -110,7 +108,7 @@
         },
         {
           "sourceId": "interconnects",
-          "checkedAt": "2026-09-30T08:53:06Z",
+          "checkedAt": "2026-09-30T08:58:14Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -123,7 +121,7 @@
         },
         {
           "sourceId": "latent-space",
-          "checkedAt": "2026-09-30T08:53:06Z",
+          "checkedAt": "2026-09-30T08:58:14Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -137,7 +135,7 @@
         },
         {
           "sourceId": "towards-ai",
-          "checkedAt": "2026-09-30T08:53:06Z",
+          "checkedAt": "2026-09-30T08:58:14Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
@@ -150,7 +148,7 @@
         },
         {
           "sourceId": "data-science-collective",
-          "checkedAt": "2026-09-30T08:53:07Z",
+          "checkedAt": "2026-09-30T08:58:14Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
@@ -164,12 +162,13 @@
         },
         {
           "sourceId": "arxiv-ir",
-          "checkedAt": "2026-09-30T08:53:07Z",
+          "checkedAt": "2026-09-30T08:58:15Z",
           "status": "ok",
           "entries": 41,
-          "eligible": 2,
-          "selected": 2,
+          "eligible": 0,
+          "selected": 0,
           "rejected": {
+            "alreadyArchived": 2,
             "offTopic": 12,
             "notNewPreprint": 27
           },
