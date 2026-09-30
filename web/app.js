@@ -138,7 +138,8 @@
         const field = name => article.querySelector('[data-field="' + name + '"]');
         for (const key of ["kind", "topic", "title", "excerptLabel", "excerpt", "evidence", "caveat"]) field(key).textContent = item[key];
         field("date").textContent = item.publishedAt ? formatDate(item.publishedAt) : "Publication date uncertain";
-        field("why").textContent = item.matchedTerms.length ? "Matched public-web terms: " + item.matchedTerms.join(", ") + "." : "Manually selected seed; the original qualifications are preserved below.";
+        const reason = item.topic === "Agent products" ? "First-party agent-product launch wording: " : "Matched web-intelligence signals: ";
+        field("why").textContent = item.matchedTerms.length ? reason + item.matchedTerms.join(", ") + "." : "Manually selected seed; the original qualifications are preserved below.";
         field("source-link").textContent = sources.get(item.sourceId).name + " - read the source";
         field("source-link").href = validateUrl(item.url);
         article.dataset.storyId = item.id;
@@ -147,7 +148,7 @@
       if (!items.length) {
         const quiet = !edition.items.length;
         showEmpty(container, quiet ? "A quiet result, not a filler edition" : "No matching stories in this edition",
-          quiet ? "The successful feeds produced no new, in-window items matching the public-web filter. This does not establish that nothing happened; failed and reference-only sources are not covered."
+          quiet ? "The successful feeds produced no new, in-window items matching the web-intelligence or qualified agent-product rules. This does not establish that nothing happened; failed and reference-only sources are not covered."
             : "Try a different topic or shorter search. The archive contains earlier editions.", !quiet);
       }
     }
@@ -272,7 +273,7 @@
       byId("cadence").textContent = data.site.schedule.label;
       byId("next-refresh").textContent = status.due ? formatTime(status.due.toISOString()) : "After the first successful collection";
       const references = data.sources.filter(source => !source.feed).length;
-      byId("coverage-summary").textContent = `${status.health.successful}/${status.health.total} collectors succeeded on the latest refresh. ${references} sources are reference-only, not scanned.`;
+      byId("coverage-summary").textContent = `${status.health.successful}/${status.health.total} collectors succeeded on the latest refresh. Feed success does not guarantee complete topic coverage. ${references} sources are reference-only, not scanned.`;
       const target = new URL(data.site.url);
       const hosted = window.location.origin === target.origin && window.location.pathname.startsWith(target.pathname);
       byId("hosting-status").textContent = hosted ? "Serving at the GitHub Pages URL" : "Local copy; Pages target configured";

@@ -1,27 +1,27 @@
 {
   "schemaVersion": 2,
   "currentEditionId": "2026-09-30",
-  "lastSuccessfulRefresh": "2026-09-30T08:23:06Z",
+  "lastSuccessfulRefresh": "2026-09-30T08:53:08Z",
   "editions": [
     {
       "id": "2026-09-30",
       "date": "2026-09-30",
       "name": "Weekly briefing - 2026-09-30",
       "origin": "collected",
-      "outcome": "quiet",
-      "refreshedAt": "2026-09-30T08:23:06Z",
+      "outcome": "stories",
+      "refreshedAt": "2026-09-30T08:53:08Z",
       "windowStart": "2026-09-23T03:28:51Z",
-      "windowEnd": "2026-09-30T08:23:04Z",
+      "windowEnd": "2026-09-30T08:53:03Z",
       "coverage": [
         {
           "sourceId": "openai",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:03Z",
           "status": "ok",
           "entries": 1238,
-          "eligible": 0,
-          "selected": 0,
+          "eligible": 1,
+          "selected": 1,
           "rejected": {
-            "offTopic": 16,
+            "offTopic": 15,
             "outsideWindow": 1222
           },
           "bytes": 755374,
@@ -29,7 +29,7 @@
         },
         {
           "sourceId": "google",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:03Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -43,21 +43,20 @@
         },
         {
           "sourceId": "microsoft",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:03Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
           "selected": 0,
           "rejected": {
-            "offTopic": 3,
-            "outsideWindow": 7
+            "outsideWindow": 10
           },
-          "bytes": 235219,
+          "bytes": 194465,
           "message": "Public feed retrieved and parsed."
         },
         {
           "sourceId": "brave",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:03Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
@@ -70,7 +69,7 @@
         },
         {
           "sourceId": "simon-willison",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:04Z",
           "status": "ok",
           "entries": 30,
           "eligible": 0,
@@ -84,7 +83,7 @@
         },
         {
           "sourceId": "one-useful-thing",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:05Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -97,7 +96,7 @@
         },
         {
           "sourceId": "ahead-of-ai",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:05Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -111,7 +110,7 @@
         },
         {
           "sourceId": "interconnects",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:06Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -124,7 +123,7 @@
         },
         {
           "sourceId": "latent-space",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:06Z",
           "status": "ok",
           "entries": 20,
           "eligible": 0,
@@ -138,7 +137,7 @@
         },
         {
           "sourceId": "towards-ai",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:06Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
@@ -151,7 +150,7 @@
         },
         {
           "sourceId": "data-science-collective",
-          "checkedAt": "2026-09-30T08:23:04Z",
+          "checkedAt": "2026-09-30T08:53:07Z",
           "status": "ok",
           "entries": 10,
           "eligible": 0,
@@ -165,13 +164,13 @@
         },
         {
           "sourceId": "arxiv-ir",
-          "checkedAt": "2026-09-30T08:23:05Z",
+          "checkedAt": "2026-09-30T08:53:07Z",
           "status": "ok",
           "entries": 41,
-          "eligible": 0,
-          "selected": 0,
+          "eligible": 2,
+          "selected": 2,
           "rejected": {
-            "offTopic": 14,
+            "offTopic": 12,
             "notNewPreprint": 27
           },
           "bytes": 92126,
@@ -179,7 +178,60 @@
           "robotsNote": "No robots.txt published (HTTP 404/410)."
         }
       ],
-      "items": []
+      "items": [
+        {
+          "id": "fbf6c9160eee6d4c",
+          "sourceId": "arxiv-ir",
+          "kind": "Research / preprint",
+          "topic": "Agentic applications",
+          "publishedAt": "2026-09-30T04:00:00Z",
+          "title": "Structured Interaction, Visual Localization, and Robust Execution for Complex Web Tasks: A Technical Report on the WebRetriever Challenge",
+          "excerpt": "arXiv:2609.35904v1 Announce Type: new Abstract: This report presents the web agent system developed for the WebRetriever Challenge. The system follows a structuredinteraction- first strategy, using semantic webpage...",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "agent",
+            "web tasks"
+          ],
+          "evidence": "Preprint; peer review not established",
+          "url": "https://arxiv.org/abs/2609.35904",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source. A preprint is research, not a verified product capability or a claim of peer review."
+        },
+        {
+          "id": "4e7caffd29ca672d",
+          "sourceId": "arxiv-ir",
+          "kind": "Research / preprint",
+          "topic": "Evaluation",
+          "publishedAt": "2026-09-30T04:00:00Z",
+          "title": "Socrates-RAG: Premise-Directed Inquiry against Coordinated Evidence Poisoning",
+          "excerpt": "arXiv:2609.35773v1 Announce Type: new Abstract: Retrieval-augmented generation (RAG) defenses typically decide how to filter or aggregate a fixed retrieved set. In open-corpus question answering, however, decisive...",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "evidence poisoning",
+            "open-corpus",
+            "retrieval"
+          ],
+          "evidence": "Preprint; peer review not established",
+          "url": "https://arxiv.org/abs/2609.35773",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source. A preprint is research, not a verified product capability or a claim of peer review."
+        },
+        {
+          "id": "dec620cb7225d243",
+          "sourceId": "openai",
+          "kind": "Publisher update",
+          "topic": "Agent products",
+          "publishedAt": "2026-09-29T00:00:00Z",
+          "title": "Introducing dots",
+          "excerpt": "Dots by OpenAI are proactive assistants that can keep working across complex projects and everyday tasks. Learn how dots help you stay in control while work moves forward.",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "introducing",
+            "proactive assistants"
+          ],
+          "evidence": "Publisher-reported; not independently tested",
+          "url": "https://openai.com/index/introducing-dots",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source. Product availability and benchmark comparisons are vendor-reported, not independent verification. Included as an agent-product announcement; this excerpt does not establish web-search or grounding capabilities."
+        }
+      ]
     },
     {
       "id": "2026-09-29",

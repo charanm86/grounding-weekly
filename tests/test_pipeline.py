@@ -20,6 +20,16 @@ NOW = datetime(2026, 9, 30, 3, 30, tzinfo=collector.UTC)
 SETTINGS, SOURCES = build.configuration()
 COLLECTORS = [source for source in SOURCES if source.get("feed")]
 SOURCE = COLLECTORS[0]
+DOTS_DESCRIPTION = (
+    "Dots by OpenAI are proactive assistants that can keep working across complex projects and everyday tasks. "
+    "Learn how dots help you stay in control while work moves forward."
+)
+DOTS_RSS = (
+    '<rss version="2.0"><channel><item><title>Introducing dots</title>'
+    '<link>https://openai.com/index/introducing-dots</link>'
+    '<pubDate>Tue, 29 Sep 2026 00:00:00 GMT</pubDate><category>Product</category>'
+    f'<description>{DOTS_DESCRIPTION}</description></item></channel></rss>'
+).encode()
 
 
 def seed():
@@ -248,6 +258,188 @@ class NetworkTests(unittest.TestCase):
 class SelectionTests(unittest.TestCase):
     def assemble(self, selected=None, statuses=None, previous=None, now=NOW):
         return refresh.assemble(previous or seed(), SETTINGS, SOURCES, results(selected, statuses), now, now + timedelta(seconds=5))
+
+    def test_agent_product_exact_dots_feed_through_candidate_and_assembly(self):
+        source = next(source for source in SOURCES if source["id"] == "openai")
+        parsed = collector.parse_feed(DOTS_RSS, source)[0]
+        self.assertEqual(parsed["excerpt"], DOTS_DESCRIPTION)
+        self.assertEqual(parsed["rawDate"], "Tue, 29 Sep 2026 00:00:00 GMT")
+        item, reason = refresh.candidate(parsed, source, NOW - timedelta(days=7), NOW)
+        self.assertEqual(reason, "")
+        self.assertEqual(item["title"], "Introducing dots")
+        self.assertEqual(item["publishedAt"], "2026-09-29T00:00:00Z")
+        self.assertEqual(item["url"], "https://openai.com/index/introducing-dots")
+        self.assertEqual(item["sourceId"], "openai")
+        self.assertEqual(item["topic"], "Agent products")
+        self.assertEqual(item["matchedTerms"], ["introducing", "proactive assistants"])
+        self.assertEqual(item["excerptLabel"], "Publisher excerpt")
+        self.assertIn("Publisher-reported", item["evidence"])
+        self.assertIn("does not establish web-search", item["caveat"])
+        previous = self.assemble()
+        state = self.assemble({"openai": [parsed]}, previous=previous)
+        self.assertEqual(state["editions"][0]["items"], [item])
+        self.assertEqual(state["editions"][0]["origin"], "collected")
+        self.assertEqual(state["editions"][0]["outcome"], "stories")
+        self.assertEqual(len(state["editions"]), len(previous["editions"]))
+        self.assertEqual(state["editions"][0]["windowStart"], previous["editions"][0]["windowStart"])
+        self.assertEqual(state["editions"][1], previous["editions"][1])
+
+    def test_agent_product_rule_generalizes_to_other_first_party_publishers(self):
+        source = next(source for source in COLLECTORS if source["kind"] == "Search specialist")
+        synthetic = entry("Announcing Compass", "https://example.org/compass")
+        synthetic["excerpt"] = "Compass is an always-on agent that follows up on multi-step tasks."
+        state = self.assemble({source["id"]: [synthetic]})
+        item = state["editions"][0]["items"][0]
+        self.assertEqual(item["sourceId"], source["id"])
+        self.assertNotEqual(item["sourceId"], "openai")
+        self.assertEqual(item["topic"], "Agent products")
+        self.assertEqual(item["matchedTerms"], ["always-on agent", "announcing"])
+        for kind in ("Official", "Search specialist"):
+            with self.subTest(kind=kind):
+                self.assertEqual(collector.classify("Launching TaskPilot", "TaskPilot is an autonomous agent.", kind)[0], "Agent products")
+                self.assertEqual(collector.classify("Introducing Beacon", "Beacon is an AI agent for complex tasks.", kind)[0], "Agent products")
+                self.assertEqual(collector.classify("Introducing web search", "Grounded answers for AI agents.", kind)[0], "Web grounding")
+
+    def test_agent_product_rule_rejects_generic_noise_and_untrusted_launches(self):
+        positives = ("Introducing Compass", "Compass is a proactive assistant for complex tasks.")
+        for kind in ("Newsletter", "Substack", "Analysis", "Medium", "Research", None):
+            with self.subTest(kind=kind):
+                self.assertIsNone(collector.classify(*positives, kind))
+        negatives = (
+            ("Introducing a new assistant", "An AI assistant answers your questions."),
+            ("Introducing Nova", "A language model that powers autonomous agents."),
+            ("Launching a new model", "Better performance for AI agents."),
+            ("Introducing a coding agent", "A proactive assistant for coding tasks."),
+            ("Introducing Compass: a tutorial", "Build an always-on agent with this tutorial."),
+            ("How to launch your AI agent", "A practical guide to proactive assistants."),
+            ("Announcing a funding round", "Investment in proactive assistants."),
+            ("Introducing careers at Example", "We are hiring people to build AI agents."),
+            ("Introducing enterprise RAG", "An autonomous agent for internal documents."),
+            ("Introducing an internal-document assistant", "A proactive assistant for company documents."),
+            ("Our proactive assistant gets faster", "An update for existing AI agents."),
+            ("Introducing Compass", "A proactive assistant startup announces a funding round."),
+        )
+        for title, preview in negatives:
+            with self.subTest(title=title, preview=preview):
+                self.assertIsNone(collector.classify(title, preview, "Official"))
+
+    def test_agent_product_dates_privacy_and_url_guards_still_apply(self):
+        parsed = collector.parse_feed(DOTS_RSS, SOURCE)[0]
+        for field, value, reason in (
+            ("rawDate", "2026-10-01T00:00:00Z", "futureDate"),
+            ("rawDate", "2026-09-01T00:00:00Z", "outsideWindow"),
+            ("rawDate", "2026-09-29", "invalidDate"),
+            ("rawUrl", "javascript:alert(1)", "invalidUrl"),
+            ("excerpt", DOTS_DESCRIPTION + " Contact " + "inbox" + "@" + "example.invalid", "privacyGuard"),
+        ):
+            with self.subTest(field=field, value=value):
+                item, rejection = refresh.candidate(dict(parsed, **{field: value}), SOURCE, NOW - timedelta(days=7), NOW)
+                self.assertIsNone(item)
+                self.assertEqual(rejection, reason)
+
+    def test_agent_product_source_cap_same_day_dedupe_and_archives(self):
+        dots = collector.parse_feed(DOTS_RSS, SOURCE)[0]
+        others = [
+            dict(entry("Introducing " + name, "https://example.org/" + name.lower(), published),
+                 excerpt=name + " is a proactive assistant for complex tasks.")
+            for name, published in (("Compass", "2026-09-28T00:00:00Z"), ("Beacon", "2026-09-27T00:00:00Z"))
+        ]
+        first = self.assemble({SOURCE["id"]: [dots, *others]})
+        self.assertEqual(len(first["editions"][0]["items"]), 2)
+        self.assertEqual(first["editions"][0]["items"][0]["title"], "Introducing dots")
+        self.assertEqual(first["editions"][0]["coverage"][0]["rejected"]["sourceCap"], 1)
+        duplicate = dict(dots, rawUrl=dots["rawUrl"] + "?utm_source=feed")
+        second = self.assemble({SOURCE["id"]: [dots, duplicate, *others]}, previous=first)
+        self.assertEqual(second["editions"][0]["items"], first["editions"][0]["items"])
+        self.assertEqual(second["editions"][1], first["editions"][1])
+        self.assertEqual(len(second["editions"]), len(first["editions"]))
+        later = self.assemble({SOURCE["id"]: [dots, others[0]]}, previous=second, now=NOW + timedelta(days=2))
+        self.assertEqual(later["editions"][0]["items"], [])
+        self.assertEqual(later["editions"][1], second["editions"][0])
+
+    def test_upstream_context_and_source_specialization_without_ai_keywords(self):
+        examples = (
+            ("New crawling endpoint", "Crawl public websites into structured data with fresher indexes.", "Official", "Web infrastructure"),
+            ("Reranking now costs half as much", "Query pricing falls and retrieval freshness improves.", "Search specialist", "Web infrastructure"),
+            ("Extracting structured data for agents", "An implementation guide extracts public pages into JSON for multi-step workflows.", "Medium", "Web infrastructure"),
+            ("A connector for public filings", "MCP now connects tools to online sources with lower access costs.", "Analysis", "Web infrastructure"),
+            ("Open-corpus evidence verification", "This study evaluates retrieval defenses against coordinated evidence poisoning.", "Research", "Evaluation"),
+            ("Measuring a model's citation quality", "A benchmark tests attribution when agents retrieve fresh online sources.", "Research", "Evaluation"),
+        )
+        for index, (title, preview, kind, topic) in enumerate(examples):
+            with self.subTest(title=title, kind=kind):
+                source = next(source for source in COLLECTORS if source["kind"] == kind)
+                record = dict(entry(title, f"https://example.org/upstream/{index}"), excerpt=preview)
+                item, reason = refresh.candidate(record, source, NOW - timedelta(days=7), NOW)
+                self.assertEqual(reason, "")
+                self.assertEqual(item["topic"], topic)
+                state = self.assemble({source["id"]: [record]})
+                self.assertEqual(state["editions"][0]["items"], [item])
+                for date, rejection in (("2026-09-01T00:00:00Z", "outsideWindow"), ("2026-10-01T00:00:00Z", "futureDate")):
+                    self.assertEqual(refresh.candidate(dict(record, rawDate=date), source, NOW - timedelta(days=7), NOW)[1], rejection)
+        title, preview, _, _ = examples[1]
+        self.assertIsNone(collector.classify(title, preview, "Newsletter"))
+        contextual = collector.classify(title, preview, "Search specialist")
+        self.assertIn("search-specialist source context", contextual[1])
+
+    def test_downstream_independent_applications_do_not_need_launch_or_search_keywords(self):
+        examples = (
+            ("Automating supplier diligence", "A multi-step workflow follows public filings and enriches company records for due diligence.", "Substack"),
+            ("Enterprise RAG: a coding case study", "The workflow monitors public filings, extracts facts and synthesizes updates alongside internal company documents.", "Medium"),
+            ("A travel-planning workflow", "A multi-step assistant compares live fares on airline websites then books an itinerary.", "Analysis"),
+            ("Automated shopping comparison", "Agents visit online listings, compare stock across stores and choose a purchase.", "Newsletter"),
+            ("Shopping with browser automation", "An autonomous workflow reads listing prices and compares availability before checkout.", "Analysis"),
+            ("Competitor monitoring without manual checks", "An autonomous workflow monitors online prices and synthesizes changes for market intelligence.", "Medium"),
+            ("Robust execution for complex web tasks", "This report presents an agent system using semantic webpage interactions for multi-step tasks.", "Research"),
+        )
+        for index, (title, preview, kind) in enumerate(examples):
+            with self.subTest(title=title, kind=kind):
+                source = next(source for source in SOURCES if source["kind"] == kind)
+                record = dict(entry(title, f"https://example.org/applications/{index}"), excerpt=preview)
+                # Reference-only sources are not collected; this source clone only exercises classification context.
+                source = dict(source, feed="https://example.org/feed")
+                item, reason = refresh.candidate(record, source, NOW - timedelta(days=7), NOW)
+                self.assertEqual(reason, "")
+                self.assertEqual(item["topic"], "Agentic applications")
+                self.assertNotIn("web search", (title + " " + preview).lower())
+                self.assertNotIn("agentic scale", (title + " " + preview).lower())
+        independent = next(source for source in COLLECTORS if source["kind"] == "Medium")
+        record = dict(entry(examples[1][0]), excerpt=examples[1][1])
+        state = self.assemble({independent["id"]: [record]})
+        self.assertEqual(state["editions"][0]["items"][0]["topic"], "Agentic applications")
+        self.assertEqual(state["editions"][0]["items"][0]["sourceId"], independent["id"])
+
+    def test_contextual_rules_reject_generic_ai_seo_coding_and_internal_only_items(self):
+        examples = (
+            ("AI for search engine optimization", "An automated SEO guide to keyword rankings and organic traffic.", "Medium"),
+            ("New retrieval model", "Dense retrieval benchmarks for internal documents.", "Research"),
+            ("Updating our crawler", "New retrieval support for internal company documents only.", "Search specialist"),
+            ("Building an agent", "A generic tutorial about tool calls and memory.", "Medium"),
+            ("AI assistants for customer calls", "Autonomous agents handle voice, chat and web support.", "Official"),
+            ("Introducing a cheaper frontier model", "Better coding and generic agent tasks at a lower API price.", "Official"),
+            ("Our new website", "Use an AI assistant to generate CSS and web components.", "Analysis"),
+            ("Automating enterprise RAG", "Agents retrieve only internal company documents.", "Official"),
+            ("Introducing a shopping assistant", "A generic chatbot suggests travel ideas from its training data.", "Official"),
+            ("Funding the next wave of AI agents", "We raised a funding round to hire builders.", "Official"),
+            ("Keeping websites online", "A dashboard charts uptime, CPU load and memory.", "Analysis"),
+        )
+        for title, preview, kind in examples:
+            with self.subTest(title=title, kind=kind):
+                self.assertIsNone(collector.classify(title, preview, kind))
+
+    def test_contextual_topics_share_source_caps_and_existing_snapshot_dedupe(self):
+        records = [
+            dict(entry("New public data extraction", "https://example.org/upstream"), excerpt="This release extracts structured data from public websites."),
+            dict(entry("A market intelligence workflow", "https://example.org/downstream"), excerpt="Agents synthesize public filings into company research."),
+            dict(entry("Introducing Compass", "https://example.org/product"), excerpt="Compass is a proactive assistant for complex tasks."),
+        ]
+        first = self.assemble({SOURCE["id"]: records})
+        self.assertEqual(len(first["editions"][0]["items"]), 2)
+        self.assertEqual(first["editions"][0]["coverage"][0]["rejected"]["sourceCap"], 1)
+        second = self.assemble({SOURCE["id"]: records}, previous=first)
+        self.assertEqual(second["editions"][0]["items"], first["editions"][0]["items"])
+        self.assertEqual(second["editions"][1], first["editions"][1])
+        self.assertEqual(len(second["editions"]), len(first["editions"]))
 
     def test_fresh_window_rejects_future_invalid_old_and_replacements(self):
         entries = [entry()]

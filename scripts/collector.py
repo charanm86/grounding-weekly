@@ -178,35 +178,108 @@ TOPICS = (
         r"\bsearch api\b",
     )),
 )
-EVALUATION = re.compile(r"\b(?:benchmark|evaluat\w*|citation\w*|attribution|faithfulness)\b", re.I)
+EVALUATION = re.compile(
+    r"\b(?:benchmarks?|evaluat\w*|citation\w*|attribution|faithfulness|verification|"
+    r"fact[- ]checking|evidence poisoning|source quality)\b", re.I
+)
 AI_CONTEXT = re.compile(
-    r"\b(?:ai|llms?|language models?|agents?|ground(?:ing|ed)|research|api|citations?)\b", re.I
+    r"\b(?:ai|llms?|language models?|agents?|ground(?:ing|ed)|research|api|citations?|"
+    r"rag|retrieval[- ]augmented generation)\b", re.I
 )
 OFF_TOPIC_TITLE = re.compile(
     r"\b(?:funding|fundrais\w*|series [a-f]|we.re hiring|job openings?|"
     r"internal[- ]document|enterprise[- ]rag)\b", re.I
 )
+FIRST_PARTY_KINDS = {"Official", "Search specialist"}
+EXTERNAL_INFORMATION = re.compile(
+    r"\b(?:websites?|webpages?|internet|open[- ](?:web|corpus)|"
+    r"(?:public|external)[- ](?:web|sources?|pages?|sites?|filings)|"
+    r"web[- ](?:data|information|content|sources?|tasks?|connectors?)|"
+    r"browser[- ](?:agents?|automation|navigation|tasks?)|"
+    r"online[- ](?:sources?|listings?|prices?|stores?|information)|"
+    r"live[- ](?:web|prices?|fares|listings?|news)|news feeds?)\b", re.I
+)
+UPSTREAM_CAPABILITY = re.compile(
+    r"\b(?:crawl(?:ers?|ing)?|scrap(?:e[sd]?|ers?|ing)|index(?:es|ing)?|"
+    r"retriev(?:al|e[sd]?|ers?|ing)|rerank(?:ers?|ing)?|extract(?:s|ed|ion|ors?|ing)?|"
+    r"structured (?:web )?data|connectors?|tool protocols?|model context protocol|mcp|"
+    r"(?:search|grounding|extraction|retrieval)[- ]apis?)\b", re.I
+)
+AGENT_WORKFLOW = re.compile(
+    r"\b(?:agents?|agentic|autonomous(?:ly)?|automate[sd]?|automation|"
+    r"multi[- ]step|workflows?|orchestrat\w*|proactive|always[- ]on)\b", re.I
+)
+DOWNSTREAM_APPLICATION = re.compile(
+    r"\b(?:research|synthesi[sz]\w*|enrich\w*|due diligence|(?:market|news|competitive) intelligence|"
+    r"(?:web|news|price|competitor|company)[- ]monitoring|"
+    r"monitor(?:s|ing)? (?:news|prices?|sources?|companies|competitors)|"
+    r"shopping|travel|itinerar(?:y|ies)|fares|web tasks?|browser automation)\b", re.I
+)
+MATERIAL_WORK = re.compile(
+    r"\b(?:new|now|introduc\w*|announc\w*|launch\w*|releas\w*|improv\w*|reduc\w*|"
+    r"support\w*|updat\w*|integrat\w*|pric\w*|cost\w*|access|freshness|"
+    r"benchmark\w*|evaluat\w*|verif\w*|research|study|report|case study|"
+    r"build\w*|implement\w*|test\w*|guide|tutorial)\b", re.I
+)
+INTERNAL_CONTEXT = re.compile(
+    r"\b(?:internal[- ](?:documents?|knowledge|data|sources?)|company documents?|"
+    r"enterprise[- ]rag)\b", re.I
+)
+SEO_NOISE = re.compile(r"\b(?:seo|search[- ]engine optimization|organic traffic|keyword rankings?)\b", re.I)
+PRODUCT_LAUNCH = re.compile(
+    r"\b(?:introducing|announcing|launch(?:es|ed|ing)?|unveil(?:s|ed|ing)?|releas(?:e[sd]?|ing))\b", re.I
+)
+AGENT_PRODUCT = re.compile(
+    r"\b(?:(?:ai|autonomous) agents?|(?:proactive|always[- ]on) (?:agents?|assistants?))\b", re.I
+)
+AGENT_PRODUCT_NOISE = re.compile(
+    r"\b(?:models?|llms?|coding|code[- ](?:generation|assistants?)|tutorials?|guides?|"
+    r"how[- ]to|cookbooks?|workshops?|webinars?|courses?|hiring|careers?|"
+    r"benchmarks?|evaluations?|datasets?|sdks?|frameworks?|"
+    r"internal[- ](?:documents?|knowledge)|enterprise[- ](?:rag|search)|rag)\b", re.I
+)
 
 
-def classify(title: str, preview: str) -> tuple[str, list[str]] | None:
+def classify(title: str, preview: str, source_kind: str | None = None) -> tuple[str, list[str]] | None:
     """Only title + the short public excerpt count, never hidden full-feed text."""
-    if OFF_TOPIC_TITLE.search(title):
-        return None
     text = f"{title} {preview}"
-    if not AI_CONTEXT.search(text):
-        return None
+    external = EXTERNAL_INFORMATION.search(text)
+    capability = UPSTREAM_CAPABILITY.search(text)
+    workflow = AGENT_WORKFLOW.search(text)
+    application = DOWNSTREAM_APPLICATION.search(text)
+    assessment = EVALUATION.search(text)
+    internal_only = INTERNAL_CONTEXT.search(text) and not external
+    seo = SEO_NOISE.search(text)
     matches = []
     first_topic = None
-    for topic, patterns in TOPICS:
-        for pattern in patterns:
-            match = re.search(pattern, text, re.I)
-            if match:
-                first_topic = first_topic or topic
-                matches.append(match.group().lower())
-    if not matches:
-        return None
-    topic = "Evaluation" if EVALUATION.search(text) else first_topic
-    return topic, sorted(set(matches))
+    if external and workflow and application:
+        first_topic = "Agentic applications"
+        matches = [match.group().lower() for match in (external, workflow, application)]
+    elif not seo and external and assessment and (capability or AI_CONTEXT.search(text)):
+        first_topic = "Evaluation"
+        matches = [match.group().lower() for match in (external, assessment, capability) if match]
+    elif not seo and not internal_only and capability and MATERIAL_WORK.search(text) and (
+        external or source_kind == "Search specialist"
+    ):
+        first_topic = "Web infrastructure"
+        matches = [capability.group().lower(), external.group().lower() if external else "search-specialist source context"]
+    elif not seo and not internal_only and not OFF_TOPIC_TITLE.search(title) and AI_CONTEXT.search(text):
+        for topic, patterns in TOPICS:
+            for pattern in patterns:
+                match = re.search(pattern, text, re.I)
+                if match:
+                    first_topic = first_topic or topic
+                    matches.append(match.group().lower())
+    if matches:
+        if assessment:
+            matches.append(assessment.group().lower())
+        topic = "Evaluation" if assessment else first_topic
+        return topic, sorted(set(matches))
+    if source_kind in FIRST_PARTY_KINDS and not OFF_TOPIC_TITLE.search(text) and not seo and not AGENT_PRODUCT_NOISE.search(text):
+        launch, agent = PRODUCT_LAUNCH.search(title), AGENT_PRODUCT.search(text)
+        if launch and agent:
+            return "Agent products", sorted({launch.group().lower(), agent.group().lower()})
+    return None
 
 
 def node_text(node: ET.Element, names: tuple[str, ...]) -> str:

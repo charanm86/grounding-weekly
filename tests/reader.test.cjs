@@ -47,6 +47,27 @@ test("story query and topic filtering preserve evidence", () => {
   assert.equal(curated.items.find(item => item.sourceId === "parallel").publishedAt, null);
 });
 
+test("agent products have their own searchable topic, not a web-grounding label", () => {
+  const sources = new Map(data.sources.map(source => [source.id, source]));
+  const item = { ...curated.items[0], title: "Introducing Compass", topic: "Agent products",
+    excerpt: "Compass is a proactive assistant for complex tasks.", matchedTerms: ["introducing", "proactive assistant"] };
+  const edition = { ...curated, items: [...curated.items, item] };
+  assert.deepEqual(reader.filterStories(edition, sources, "Compass", "Agent products"), [item]);
+  assert.equal(reader.filterStories(edition, sources, "", "Agent products").length, 1);
+  assert.equal(reader.filterStories(edition, sources, "Compass", "Deep research").length, 0);
+  assert.equal(reader.filterStories(edition, sources, "Compass", "all").length, 1);
+});
+
+test("upstream infrastructure and downstream applications remain distinct filter topics", () => {
+  const sources = new Map(data.sources.map(source => [source.id, source]));
+  const upstream = { ...curated.items[0], title: "Fresher public data", topic: "Web infrastructure" };
+  const downstream = { ...curated.items[1], title: "A due diligence workflow", topic: "Agentic applications" };
+  const edition = { ...curated, items: [upstream, downstream] };
+  assert.deepEqual(reader.filterStories(edition, sources, "", "Web infrastructure"), [upstream]);
+  assert.deepEqual(reader.filterStories(edition, sources, "diligence", "Agentic applications"), [downstream]);
+  assert.equal(reader.filterStories(edition, sources, "", "Agent products").length, 0);
+});
+
 test("weekly status distinguishes partial, current, overdue and uncollected", () => {
   const partial = reader.freshness(fixed, new Date("2026-10-02T04:00:00Z"));
   assert.equal(partial.level, "partial");

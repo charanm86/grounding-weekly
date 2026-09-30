@@ -15,13 +15,15 @@ const dataPattern = /(<script id="briefing-data" type="application\/json">)([\s\
 const data = JSON.parse(html.match(dataPattern)[2]);
 const seed = data.editions.find(edition => edition.origin === "curated");
 const payload = "</script><img src=x onerror=window.untrustedRan=true><script>window.untrustedRan=true";
+const relevanceTopics = ["Agent products", "Web infrastructure", "Agentic applications"];
 const escapedJson = value => JSON.stringify(value).replaceAll("<", "\\u003c").replaceAll(">", "\\u003e").replaceAll("&", "\\u0026");
-function withPayload(unsafeUrl = false) {
+function withPayload(unsafeUrl = false, topic = "Agent products") {
   const modified = structuredClone(data);
   const current = modified.editions.find(edition => edition.id === data.currentEditionId);
   current.items = [{
     ...seed.items[0], id: "synthetic-rendering-check", title: payload,
     excerpt: "<b>Publisher text only</b>", excerptLabel: "Publisher excerpt",
+    topic, matchedTerms: topic === "Agent products" ? ["introducing", "proactive assistant"] : ["public websites", "agent workflow"],
     url: unsafeUrl ? "javascript:window.untrustedRan=true" : "https://example.org/research",
   }];
   return html.replace(dataPattern, (_, before, text, after) => before + escapedJson(modified) + after);
@@ -100,7 +102,8 @@ async function main() {
   const server = http.createServer((request, response) => {
     if (request.url === "/favicon.ico") { response.writeHead(204); response.end(); return; }
     response.setHeader("Content-Type", "text/html; charset=utf-8");
-    response.end(request.url.startsWith("/unsafe-url") ? withPayload(true) : request.url.startsWith("/untrusted") ? withPayload() : html);
+    const requested = new URL(request.url, "http://127.0.0.1");
+    response.end(requested.pathname.startsWith("/unsafe-url") ? withPayload(true) : requested.pathname.startsWith("/untrusted") ? withPayload(false, requested.searchParams.get("topic") || "Agent products") : html);
   });
   server.listen(0, "127.0.0.1");
   await once(server, "listening");
@@ -142,6 +145,12 @@ async function main() {
     assert.equal(await protocol.evaluate("document.documentElement.dataset.theme"), "light");
     const current = data.editions.find(edition => edition.id === data.currentEditionId);
     assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), current.items.length);
+    for (const topic of new Set(current.items.map(item => item.topic))) {
+      await protocol.evaluate(`document.getElementById('filter').value = ${JSON.stringify(topic)}; document.getElementById('filter').dispatchEvent(new Event('change'))`);
+      assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), current.items.filter(item => item.topic === topic).length);
+      assert.deepEqual(await protocol.evaluate("[...document.querySelectorAll('#story-list [data-field=\"topic\"]')].map(node => node.textContent)"), current.items.filter(item => item.topic === topic).map(item => item.topic));
+    }
+    await protocol.evaluate("document.getElementById('filter').value = 'all'; document.getElementById('filter').dispatchEvent(new Event('change'))");
     assert.ok((await protocol.evaluate("document.getElementById('refresh-date').textContent")).length);
     assert.doesNotMatch(await protocol.evaluate("document.body.innerText"), /Private website preview|Not published|Not scheduled|First edition/u);
     assert.equal(await protocol.evaluate("getComputedStyle(document.querySelector('.brand-mark')).color === getComputedStyle(document.querySelector('.brand-accent')).color"), false);
@@ -187,18 +196,25 @@ async function main() {
     await protocol.send("Page.navigate", { url: fileUrl + "?clawpilotTheme=light" });
     await protocol.wait("location.protocol === 'file:' && document.readyState === 'complete' && document.getElementById('stamp-date').textContent.length > 0");
     assert.equal(await protocol.evaluate("document.getElementById('load-error').hidden"), true);
+    assert.equal(await protocol.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), true);
     await protocol.evaluate("document.getElementById('theme-toggle').click()");
     assert.equal(await protocol.evaluate("document.documentElement.dataset.theme"), "dark");
     assert.equal(await protocol.evaluate("new URL(location.href).searchParams.get('clawpilotTheme')"), "dark");
     assert.deepEqual(protocol.errors, []);
 
-    await protocol.send("Page.navigate", { url: base + "/untrusted?clawpilotTheme=dark" });
-    await protocol.wait("location.pathname === '/untrusted' && document.readyState === 'complete' && document.querySelector('#story-list h3') !== null");
-    assert.equal(await protocol.evaluate("document.querySelector('#story-list h3').textContent"), payload);
-    assert.equal(await protocol.evaluate("document.querySelector('#story-list .story-summary').textContent"), "<b>Publisher text only</b>");
-    assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list img, #story-list script, #story-list b').length"), 0);
-    assert.equal(await protocol.evaluate("Boolean(window.untrustedRan)"), false);
-    assert.deepEqual(protocol.errors, []);
+    for (const topic of relevanceTopics) {
+      await protocol.send("Page.navigate", { url: base + "/untrusted?clawpilotTheme=dark&topic=" + encodeURIComponent(topic) });
+      await protocol.wait(`location.pathname === '/untrusted' && document.readyState === 'complete' && document.querySelector('#story-list [data-field="topic"]')?.textContent === ${JSON.stringify(topic)}`);
+      assert.equal(await protocol.evaluate("document.querySelector('#story-list h3').textContent"), payload);
+      assert.equal(await protocol.evaluate("document.querySelector('#story-list .story-summary').textContent"), "<b>Publisher text only</b>");
+      await protocol.evaluate(`document.getElementById('filter').value = ${JSON.stringify(topic)}; document.getElementById('filter').dispatchEvent(new Event('change'))`);
+      assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), 1);
+      assert.equal(await protocol.evaluate("document.querySelector('#story-list [data-field=\"topic\"]').textContent"), topic);
+      assert.match(await protocol.evaluate("document.querySelector('#story-list [data-field=\"why\"]').textContent"), topic === "Agent products" ? /^First-party agent-product launch wording:/u : /^Matched web-intelligence signals:/u);
+      assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list img, #story-list script, #story-list b').length"), 0);
+      assert.equal(await protocol.evaluate("Boolean(window.untrustedRan)"), false);
+      assert.deepEqual(protocol.errors, []);
+    }
 
     await protocol.send("Page.navigate", { url: base + "/unsafe-url" });
     await protocol.wait("document.readyState === 'complete' && !document.getElementById('load-error').hidden");

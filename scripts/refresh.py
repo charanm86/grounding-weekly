@@ -10,7 +10,7 @@ from datetime import datetime, timedelta, timezone
 
 from scripts.build import ROOT, BuildError, configuration, publish_files, read_json, render, validate_state, workspace_lock
 from scripts.collector import (
-    CollectionError, UTC, canonical_url, classify, collect_bounded, iso, parse_date, story_id, title_key,
+    CollectionError, FIRST_PARTY_KINDS, UTC, canonical_url, classify, collect_bounded, iso, parse_date, story_id, title_key,
 )
 from scripts.check_public import problems
 
@@ -33,13 +33,13 @@ def candidate(entry: dict, source: dict, start: datetime, end: datetime) -> tupl
         url = canonical_url(entry["rawUrl"], source["feed"])
     except CollectionError:
         return None, "invalidUrl"
-    match = classify(entry["title"], entry["excerpt"])
+    match = classify(entry["title"], entry["excerpt"], source["kind"])
     if not match:
         return None, "offTopic"
     if problems("data/story.json", " ".join((entry["title"], entry["excerpt"], url))):
         return None, "privacyGuard"
     topic, terms = match
-    official = source["kind"] in {"Official", "Search specialist"}
+    official = source["kind"] in FIRST_PARTY_KINDS
     research = source["kind"] == "Research"
     evidence = (
         "Publisher-reported; not independently tested" if official else
@@ -53,6 +53,10 @@ def candidate(entry: dict, source: dict, start: datetime, end: datetime) -> tupl
     )
     if official:
         caveat += " Product availability and benchmark comparisons are vendor-reported, not independent verification."
+    if topic == "Agent products":
+        caveat += " Included as an agent-product announcement; this excerpt does not establish web-search or grounding capabilities."
+    if "search-specialist source context" in terms:
+        caveat += " Relevance uses the publisher's web-search specialization; agent use is not established by this excerpt."
     if research:
         caveat += " A preprint is research, not a verified product capability or a claim of peer review."
     return {
