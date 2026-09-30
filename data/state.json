@@ -1,0 +1,225 @@
+{
+  "schemaVersion": 2,
+  "currentEditionId": "2026-09-30",
+  "lastSuccessfulRefresh": "2026-09-30T06:27:28Z",
+  "editions": [
+    {
+      "id": "2026-09-30",
+      "date": "2026-09-30",
+      "name": "Weekly briefing - 2026-09-30",
+      "origin": "collected",
+      "outcome": "quiet",
+      "refreshedAt": "2026-09-30T06:27:28Z",
+      "windowStart": "2026-09-23T03:28:51Z",
+      "windowEnd": "2026-09-30T06:27:22Z",
+      "coverage": [
+        {
+          "sourceId": "openai",
+          "checkedAt": "2026-09-30T06:27:22Z",
+          "status": "ok",
+          "entries": 1238,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 16,
+            "outsideWindow": 1222
+          },
+          "bytes": 755374,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "google",
+          "checkedAt": "2026-09-30T06:27:22Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 5,
+            "outsideWindow": 15
+          },
+          "bytes": 508165,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "microsoft",
+          "checkedAt": "2026-09-30T06:27:22Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 10
+          },
+          "bytes": 194465,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "brave",
+          "checkedAt": "2026-09-30T06:27:22Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 10
+          },
+          "bytes": 146694,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "simon-willison",
+          "checkedAt": "2026-09-30T06:27:23Z",
+          "status": "ok",
+          "entries": 30,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 18,
+            "outsideWindow": 12
+          },
+          "bytes": 167176,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "one-useful-thing",
+          "checkedAt": "2026-09-30T06:27:24Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 926908,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "ahead-of-ai",
+          "checkedAt": "2026-09-30T06:27:24Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 1,
+            "outsideWindow": 19
+          },
+          "bytes": 2706431,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "interconnects",
+          "checkedAt": "2026-09-30T06:27:25Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 539653,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "latent-space",
+          "checkedAt": "2026-09-30T06:27:25Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 11,
+            "outsideWindow": 9
+          },
+          "bytes": 1369493,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "towards-ai",
+          "checkedAt": "2026-09-30T06:27:26Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 10
+          },
+          "bytes": 174192,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "data-science-collective",
+          "checkedAt": "2026-09-30T06:27:26Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 6,
+            "outsideWindow": 4
+          },
+          "bytes": 110856,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "arxiv-ir",
+          "checkedAt": "2026-09-30T06:27:27Z",
+          "status": "ok",
+          "entries": 41,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 14,
+            "notNewPreprint": 27
+          },
+          "bytes": 92126,
+          "message": "Public feed retrieved and parsed.",
+          "robotsNote": "No robots.txt published (HTTP 404/410)."
+        }
+      ],
+      "items": []
+    },
+    {
+      "id": "2026-09-29",
+      "date": "2026-09-29",
+      "name": "The initial, qualified briefing",
+      "origin": "curated",
+      "outcome": "curated",
+      "refreshedAt": null,
+      "windowStart": null,
+      "windowEnd": null,
+      "coverage": [],
+      "items": [
+        {
+          "id": "exa-agent-ultra",
+          "sourceId": "exa",
+          "kind": "Qualified release",
+          "topic": "Deep research",
+          "publishedAt": "2026-09-25",
+          "title": "Exa introduces Agent Ultra for more exhaustive web research",
+          "excerpt": "Exa describes Ultra as its highest-effort research mode, coordinating agents across sources for list-building, entity enrichment and evidence-backed research. The announcement links to documentation and a playground.",
+          "excerptLabel": "Seed editorial note - 29 September 2026",
+          "matchedTerms": [],
+          "evidence": "Vendor announcement; not independently tested",
+          "url": "https://exa.ai/blog/exa-agent-ultra",
+          "caveat": "The article's datePublished is 25 September 2026. Exa's WANDR, DeepSearchQA and other comparisons are vendor-reported, not independently proven superiority. The product was not exercised for this briefing."
+        },
+        {
+          "id": "parallel-lovable",
+          "sourceId": "parallel",
+          "kind": "Available-capability watch",
+          "topic": "Web access",
+          "publishedAt": null,
+          "title": "Parallel brings live-web capabilities into Lovable",
+          "excerpt": "Parallel says its Lovable connector supports web search, deep research, list enrichment and content extraction. Managed Lovable billing or a Parallel API key is required; this does not imply free usage.",
+          "excerptLabel": "Seed editorial note - 29 September 2026",
+          "matchedTerms": [],
+          "evidence": "Date uncertain; not a new-launch claim",
+          "url": "https://parallel.ai/blog/lovable-parallel",
+          "caveat": "The blog index displayed 28 September while article JSON-LD stated 13 September 2026. Retained as an available-capability watch item, not a confirmed new launch this week. The integration was not independently tested."
+        }
+      ]
+    }
+  ]
+}

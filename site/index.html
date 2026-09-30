@@ -1,0 +1,688 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="default-src &#x27;none&#x27;; script-src &#x27;sha256-J58UBalZcJHrtIwJrzd4avduyvlO5Zl3lnhrswQfM/o=&#x27; &#x27;sha256-rmIBqoJHon2+55NHZaE1yzcubiTttb/k6m9ozCo+2e4=&#x27;; style-src &#x27;sha256-B5beFUxVFb9QngfX6gtQvSL09qkSDrYBrDczjOAy/zc=&#x27;; base-uri &#x27;none&#x27;; form-action &#x27;none&#x27;; connect-src &#x27;none&#x27;; object-src &#x27;none&#x27;">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="An evidence-first weekly briefing on public-web grounding, agentic search and deep research. Public excerpts, source health and an honest archive.">
+  <link rel="canonical" href="https://charanm86.github.io/grounding-weekly/">
+  <title>Grounding Weekly</title>
+  <script>
+    (() => {
+      const param = new URLSearchParams(window.location.search).get("clawpilotTheme");
+      const theme =
+        param || (window.matchMedia("(prefers-color-scheme: dark)").matches ? "dark" : "light");
+      document.documentElement.setAttribute("data-theme", theme);
+    })();
+  </script>
+  <style>:root {
+  color-scheme: light;
+  --cp-bg: #f7f4ef;
+  --cp-bg-elevated: #fcfbf8;
+  --cp-surface: #ffffff;
+  --cp-surface-soft: #f5f5f5;
+  --cp-border: #dedede;
+  --cp-border-strong: #919191;
+  --cp-text: #242424;
+  --cp-text-muted: #5c5c5c;
+  --cp-text-soft: #6f6f6f;
+  --cp-accent: #b11f4b;
+  --cp-accent-hover: #9a1a41;
+  --cp-accent-soft: rgba(177, 31, 75, 0.08);
+  --cp-accent-fg: #ffffff;
+  --cp-success: #16a34a;
+  --cp-danger: #dc2626;
+  --cp-warning: #f59e0b;
+  --cp-link: #0078d4;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.12);
+  --cp-overlay: rgba(255, 255, 255, 0.8);
+  --cp-panel: rgba(255, 255, 255, 0.86);
+  --cp-panel-strong: rgba(255, 255, 255, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.55);
+  --cp-highlight: rgba(177, 31, 75, 0.12);
+}
+html[data-theme="dark"] {
+  color-scheme: dark;
+  --cp-bg: #3d3b3a;
+  --cp-bg-elevated: #343231;
+  --cp-surface: #292929;
+  --cp-surface-soft: #2e2e2e;
+  --cp-border: #474747;
+  --cp-border-strong: #5f5f5f;
+  --cp-text: #dedede;
+  --cp-text-muted: #919191;
+  --cp-text-soft: #b0b0b0;
+  --cp-accent: #fd8ea1;
+  --cp-accent-hover: #fb7b91;
+  --cp-accent-soft: rgba(253, 142, 161, 0.14);
+  --cp-accent-fg: #1a1a1a;
+  --cp-success: #4ade80;
+  --cp-danger: #f87171;
+  --cp-warning: #fbbf24;
+  --cp-link: #4da6ff;
+  --cp-shadow: 0 18px 48px rgba(0, 0, 0, 0.32);
+  --cp-overlay: rgba(41, 41, 41, 0.88);
+  --cp-panel: rgba(41, 41, 41, 0.72);
+  --cp-panel-strong: rgba(41, 41, 41, 0.96);
+  --cp-sheen: rgba(255, 255, 255, 0.04);
+  --cp-highlight: rgba(253, 142, 161, 0.12);
+}
+:root { --cp-card-shadow: 0 0 2px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.14); }
+* { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-behavior: smooth; }
+body { margin: 0; background: var(--cp-bg); color: var(--cp-text); font: 16px/1.6 "Segoe UI", Aptos, Calibri, -apple-system, BlinkMacSystemFont, sans-serif; }
+button, input, select { font: inherit; }
+button, a { -webkit-tap-highlight-color: var(--cp-accent-soft); }
+button { cursor: pointer; }
+a { color: var(--cp-link); text-underline-offset: 4px; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 3px solid var(--cp-accent); outline-offset: 4px; }
+h1, h2, h3, p { margin: 0; }
+h1, h2, h3 { line-height: 1.2; }
+.shell { width: min(1240px, calc(100% - 64px)); margin: 0 auto; }
+.mono, .eyebrow, .tag, .source-kind { font-family: Consolas, "Courier New", Courier, monospace; }
+.eyebrow { color: var(--cp-text-muted); font-size: 12px; letter-spacing: .08em; text-transform: uppercase; }
+.muted { color: var(--cp-text-muted); }
+.small { font-size: 13px; }
+.skip-link { position: fixed; top: 8px; left: 16px; z-index: 20; transform: translateY(-160%); background: var(--cp-surface); padding: 8px 16px; border: 1px solid var(--cp-border); }
+.skip-link:focus { transform: translateY(0); }
+.masthead { display: flex; align-items: center; justify-content: space-between; gap: 24px; padding: 28px 0 24px; border-bottom: 1px solid var(--cp-border); }
+.brand { color: var(--cp-text); text-decoration: none; display: flex; align-items: center; gap: 12px; font-size: 19px; font-weight: 700; letter-spacing: -.035em; }
+.brand-mark { display: grid; place-items: center; width: 36px; height: 36px; border-radius: 10px; background: var(--cp-accent); color: var(--cp-accent-fg); font-size: 21px; font-weight: 600; }
+.brand .brand-accent { color: var(--cp-accent); }
+.nav { display: flex; gap: 4px; align-items: center; }
+.nav a { border-radius: 10px; padding: 8px 16px; font-size: 14px; color: var(--cp-text-muted); text-decoration: none; }
+.nav a:hover, .nav a[aria-current="page"] { background: var(--cp-accent-soft); color: var(--cp-accent); }
+.theme-button, .quiet-button { border: 1px solid var(--cp-border); color: var(--cp-text-muted); background: var(--cp-bg-elevated); border-radius: 10px; padding: 8px 12px; font-size: 13px; text-decoration: none; display: inline-block; }
+.theme-button:hover, .quiet-button:hover { border-color: var(--cp-accent); color: var(--cp-accent); }
+.hero { display: grid; grid-template-columns: 1fr 320px; align-items: end; gap: 48px; padding: 48px 0 36px; }
+.hero h1 { margin-top: 12px; font-size: clamp(32px, 4.4vw, 56px); font-weight: 650; letter-spacing: -.045em; max-width: 680px; }
+.hero-copy { margin-top: 20px; max-width: 580px; color: var(--cp-text-muted); font-size: 17px; }
+.edition-stamp { padding: 16px 0 16px 24px; border-left: 3px solid var(--cp-accent); }
+.edition-stamp strong { display: block; margin: 8px 0 4px; font-size: 22px; font-weight: 600; letter-spacing: -.025em; }
+.freshness-banner { display: flex; justify-content: space-between; gap: 16px; align-items: center; padding: 12px 16px; border: 1px solid var(--cp-border); border-left: 4px solid var(--cp-success); border-radius: 10px; background: var(--cp-bg-elevated); font-size: 13px; margin-bottom: 24px; }
+.freshness-banner[data-level="partial"], .freshness-banner[data-level="pending"] { border-left-color: var(--cp-warning); }
+.freshness-banner[data-level="overdue"] { border-left-color: var(--cp-danger); }
+.freshness-banner a { flex-shrink: 0; }
+.toolbar { display: flex; align-items: center; gap: 16px; margin-bottom: 28px; }
+.search-wrap { position: relative; flex: 1; }
+.search-wrap label { position: absolute; width: 1px; height: 1px; overflow: hidden; clip-path: inset(50%); }
+.search-wrap svg { position: absolute; left: 16px; top: 15px; width: 20px; height: 20px; stroke: var(--cp-text-muted); pointer-events: none; }
+.search-wrap input { width: 100%; height: 50px; border: 1px solid var(--cp-border); border-radius: 10px; padding: 12px 76px 12px 48px; background: var(--cp-surface); color: var(--cp-text); }
+.search-wrap input::placeholder { color: var(--cp-text-soft); }
+.search-wrap button { position: absolute; right: 12px; top: 12px; border: 0; padding: 2px 8px; background: var(--cp-surface-soft); color: var(--cp-text-muted); border-radius: 6px; font-size: 13px; }
+.toolbar select { height: 50px; min-width: 180px; border: 1px solid var(--cp-border); border-radius: 10px; padding: 8px 36px 8px 12px; background: var(--cp-surface); color: var(--cp-text); }
+.layout { display: grid; grid-template-columns: minmax(0, 1fr) 304px; gap: 32px; align-items: start; }
+.section-top { display: flex; justify-content: space-between; gap: 16px; align-items: baseline; margin-bottom: 16px; }
+.section-top h2 { font-size: 20px; letter-spacing: -.025em; }
+.result-count { font-size: 12px; color: var(--cp-text-muted); }
+.section-description { margin: -4px 0 24px; font-size: 14px; color: var(--cp-text-muted); max-width: 760px; }
+.stories { display: grid; gap: 20px; }
+.story { border: 1px solid var(--cp-border); border-radius: 16px; background: var(--cp-surface); box-shadow: var(--cp-card-shadow); overflow: hidden; }
+.story-content { padding: 28px 28px 24px; }
+.story-tags { display: flex; flex-wrap: wrap; align-items: center; gap: 8px; margin-bottom: 16px; }
+.tag { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 6px; background: var(--cp-surface-soft); color: var(--cp-text-muted); font-size: 11px; line-height: 1.6; }
+.tag.accent { color: var(--cp-accent); background: var(--cp-accent-soft); }
+.story h3 { font-size: clamp(22px, 2.4vw, 29px); font-weight: 650; letter-spacing: -.035em; margin-bottom: 16px; max-width: 690px; overflow-wrap: anywhere; }
+.excerpt-label { font-size: 10px; margin-bottom: 8px; }
+.story-summary { font-size: 16px; color: var(--cp-text-muted); overflow-wrap: anywhere; }
+.why { margin-top: 20px; padding-left: 16px; border-left: 2px solid var(--cp-border-strong); font-size: 14px; }
+.why strong { display: block; margin-bottom: 4px; font-size: 12px; color: var(--cp-accent); }
+.evidence-strip { display: grid; grid-template-columns: 1fr 1.1fr; gap: 16px; padding: 16px 28px; border-top: 1px solid var(--cp-border); background: var(--cp-bg-elevated); }
+.evidence-strip small { display: block; color: var(--cp-text-muted); font-size: 11px; margin-bottom: 2px; letter-spacing: .06em; text-transform: uppercase; }
+.evidence-strip a { font-size: 13px; font-weight: 600; }
+.evidence-strip .status-text { font-size: 13px; }
+.story-notes { border-top: 1px solid var(--cp-border); padding: 0 28px; }
+.story-notes summary { cursor: pointer; padding: 12px 0; color: var(--cp-text-muted); font-size: 13px; }
+.story-notes p { margin-bottom: 16px; font-size: 13px; color: var(--cp-text-muted); }
+.sidebar { display: grid; gap: 20px; }
+.side-panel { background: var(--cp-bg-elevated); border: 1px solid var(--cp-border); border-radius: 16px; padding: 24px; }
+.side-panel h2 { margin: 12px 0; font-size: 20px; letter-spacing: -.025em; }
+.side-panel p { font-size: 14px; color: var(--cp-text-muted); }
+.side-panel a { display: block; margin-top: 16px; font-size: 14px; }
+.side-panel ul { margin: 16px 0 0; padding-left: 18px; color: var(--cp-text-muted); font-size: 13px; }
+.side-panel li + li { margin-top: 8px; }
+.status-row { display: grid; grid-template-columns: 1fr; padding: 12px 0; border-bottom: 1px solid var(--cp-border); gap: 2px; }
+.status-row:last-child { border-bottom: 0; padding-bottom: 0; }
+.status-row dt { color: var(--cp-text-muted); font-size: 12px; }
+.status-row dd { margin: 0; font-size: 14px; font-weight: 600; }
+.source-intro { border: 1px solid var(--cp-border); border-radius: 10px; background: var(--cp-bg-elevated); padding: 16px 20px; margin-bottom: 20px; font-size: 13px; color: var(--cp-text-muted); }
+.source-list { display: grid; gap: 12px; }
+.source-row { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); align-items: start; gap: 16px; padding: 20px 24px; background: var(--cp-surface); border: 1px solid var(--cp-border); border-radius: 16px; }
+.source-row h3 { font-size: 17px; font-weight: 600; margin-top: 4px; }
+.source-row h3 a { color: var(--cp-text); text-decoration: none; }
+.source-row h3 a:hover { color: var(--cp-accent); text-decoration: underline; }
+.source-kind { color: var(--cp-text-soft); font-size: 10px; text-transform: uppercase; letter-spacing: .08em; }
+.source-purpose, .source-health { font-size: 13px; color: var(--cp-text-muted); overflow-wrap: anywhere; }
+.source-audience { margin-top: 8px; font-size: 12px; color: var(--cp-text-soft); }
+.source-feed { display: inline-block; margin-top: 8px; font-size: 12px; }
+.source-health { margin-top: 12px; border-top: 1px solid var(--cp-border); padding-top: 12px; }
+.health-label { color: var(--cp-text); font-weight: 600; display: block; margin-bottom: 4px; }
+.health-label::before { content: ""; display: inline-block; width: 7px; height: 7px; border-radius: 50%; margin-right: 8px; background: var(--cp-border-strong); }
+.health-label[data-status="ok"]::before { background: var(--cp-success); }
+.health-label[data-status="blocked"]::before, .health-label[data-status="failed"]::before { background: var(--cp-warning); }
+.archive-card { display: grid; grid-template-columns: 120px minmax(0, 1fr); gap: 24px; padding: 24px; border: 1px solid var(--cp-border); border-radius: 16px; background: var(--cp-surface); }
+.archive-date { color: var(--cp-accent); font-size: 14px; font-family: Consolas, "Courier New", Courier, monospace; }
+.archive-card h3 { margin-bottom: 8px; font-size: 20px; letter-spacing: -.025em; }
+.archive-card p { font-size: 14px; color: var(--cp-text-muted); }
+.archive-card .quiet-button { margin-top: 16px; }
+.empty { border: 1px dashed var(--cp-border-strong); border-radius: 16px; padding: 36px 24px; text-align: center; background: var(--cp-bg-elevated); }
+.empty h3 { font-size: 20px; margin-bottom: 8px; }
+.empty p { color: var(--cp-text-muted); font-size: 14px; margin-bottom: 20px; }
+.footer { margin-top: 48px; padding: 24px 0 32px; border-top: 1px solid var(--cp-border); display: flex; justify-content: space-between; gap: 24px; color: var(--cp-text-soft); font-size: 12px; }
+.error { padding: 20px; border: 1px solid var(--cp-danger); border-radius: 10px; color: var(--cp-danger); background: var(--cp-surface); margin: 24px 0; }
+@media (max-width: 1000px) {
+  .shell { width: min(900px, calc(100% - 40px)); }
+  .hero { grid-template-columns: 1fr 260px; gap: 28px; }
+  .layout { grid-template-columns: minmax(0, 1fr) 260px; gap: 20px; }
+  .story-content { padding: 24px; }
+  .evidence-strip { padding-left: 24px; padding-right: 24px; }
+  .story-notes { padding: 0 24px; }
+}
+@media (max-width: 760px) {
+  .shell { width: calc(100% - 32px); }
+  .masthead { flex-wrap: wrap; gap: 20px 12px; padding: 20px 0 16px; }
+  .brand { font-size: 18px; }
+  .nav { order: 3; width: 100%; }
+  .nav a { flex: 1; text-align: center; padding: 8px; }
+  .hero { grid-template-columns: 1fr; gap: 24px; padding: 32px 0 24px; }
+  .hero h1 { font-size: 38px; max-width: 580px; }
+  .hero-copy { font-size: 15px; margin-top: 16px; }
+  .edition-stamp { padding: 4px 0 4px 16px; }
+  .edition-stamp strong { font-size: 18px; margin-top: 4px; }
+  .freshness-banner { flex-direction: column; align-items: start; gap: 8px; }
+  .toolbar { flex-wrap: wrap; gap: 12px; }
+  .search-wrap { flex-basis: 100%; }
+  .toolbar select { width: 100%; }
+  .layout { grid-template-columns: 1fr; }
+  .story-content { padding: 20px; }
+  .story h3 { font-size: 24px; }
+  .evidence-strip { padding: 16px 20px; gap: 12px; }
+  .story-notes { padding: 0 20px; }
+  .sidebar { grid-template-columns: 1fr; margin-top: 12px; }
+  .source-row { grid-template-columns: 1fr; gap: 12px; padding: 20px; }
+  .archive-card { grid-template-columns: 1fr; gap: 12px; padding: 20px; }
+  .footer { flex-direction: column; gap: 8px; margin-top: 32px; }
+}
+@media (max-width: 380px) {
+  .brand { font-size: 16px; gap: 8px; }
+  .theme-button { padding: 8px; }
+  .section-top { flex-wrap: wrap; gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+@media print {
+  body { background: var(--cp-surface); }
+  .shell { width: 100%; }
+  .nav, .theme-button, .toolbar, .freshness-banner a { display: none; }
+  .hero, .layout { display: block; }
+  .hero { padding: 24px 0; }
+  .edition-stamp { margin-top: 20px; }
+  .sidebar { margin-top: 24px; grid-template-columns: 1fr 1fr; }
+  .story { break-inside: avoid; box-shadow: none; }
+}
+</style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to the briefing</a>
+  <div class="shell">
+    <header class="masthead">
+      <a class="brand" href="#edition" aria-label="Grounding Weekly home">
+        <span class="brand-mark" aria-hidden="true">g.</span>
+        <span>Grounding <span class="brand-accent">Weekly</span></span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#edition" data-nav="edition" aria-current="page">The briefing</a>
+        <a href="#archive" data-nav="archive">Archive</a>
+        <a href="#sources" data-nav="sources">Sources</a>
+      </nav>
+      <button class="theme-button" id="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </header>
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Web grounding / Agentic search / Deep research</p>
+        <h1 id="page-title">What's new in<br>web-grounded AI.</h1>
+        <p class="hero-copy">The source, the evidence and the caveat stay together. Short public excerpts, not generated news or a headline quota.</p>
+      </div>
+      <div class="edition-stamp">
+        <p class="eyebrow" id="stamp-label">Edition</p>
+        <strong id="stamp-date"></strong>
+        <p class="small muted" id="stamp-note"></p>
+      </div>
+    </section>
+    <div class="freshness-banner" id="freshness-banner" role="status">
+      <span id="freshness-summary"></span>
+      <a href="#update-status">Refresh details</a>
+    </div>
+    <div id="load-error" class="error" role="alert" hidden></div>
+    <noscript><p class="error">Enable JavaScript to browse the briefing, filters and source library. This self-contained reader makes no background requests and needs no external scripts.</p></noscript>
+    <main id="main-content" tabindex="-1">
+      <div class="toolbar">
+        <div class="search-wrap">
+          <label for="search">Search the current view</label>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
+          <input id="search" type="search" placeholder="Search stories, topics or publishers" autocomplete="off" spellcheck="false" aria-controls="view-content">
+          <button id="clear-search" type="button" hidden aria-label="Clear search">Clear</button>
+        </div>
+        <label for="filter" class="eyebrow" id="filter-label">Topic</label>
+        <select id="filter" aria-labelledby="filter-label" aria-controls="view-content"><option value="all">All topics</option></select>
+      </div>
+      <div class="layout">
+        <div id="view-content">
+          <section id="edition-view" aria-labelledby="edition-heading">
+            <div class="section-top">
+              <h2 id="edition-heading">This edition</h2>
+              <span class="result-count mono" id="edition-count" role="status" aria-live="polite"></span>
+            </div>
+            <p class="section-description" id="edition-description"></p>
+            <div id="story-list" class="stories"></div>
+          </section>
+          <section id="archive-view" aria-labelledby="archive-heading" hidden>
+            <div class="section-top">
+              <h2 id="archive-heading">The archive</h2>
+              <span class="result-count mono" id="archive-count" role="status" aria-live="polite"></span>
+            </div>
+            <p class="section-description">Saved editions, including quiet weeks. Dates and source health belong to each snapshot; old stories are not announced again. Same-day refreshes update one edition.</p>
+            <div id="archive-list" class="stories"></div>
+          </section>
+          <section id="sources-view" aria-labelledby="sources-heading" hidden>
+            <div class="section-top">
+              <h2 id="sources-heading">The source library</h2>
+              <span class="result-count mono" id="sources-count" role="status" aria-live="polite"></span>
+            </div>
+            <p class="section-description" id="source-description"></p>
+            <div class="source-intro" id="source-intro"></div>
+            <div id="source-list" class="source-list"></div>
+          </section>
+        </div>
+        <aside class="sidebar" aria-label="Reading notes and refresh status">
+          <section class="side-panel">
+            <p class="eyebrow">Benchmark reference</p>
+            <h2>Look beyond the leaderboard.</h2>
+            <p>Artificial Analysis adds model-quality, speed and pricing context. General intelligence rankings are not direct evaluations of web grounding or citation accuracy.</p>
+            <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener noreferrer">Explore Artificial Analysis</a>
+          </section>
+          <section class="side-panel" id="update-status" aria-labelledby="update-heading">
+            <p class="eyebrow">Refresh status</p>
+            <h2 id="update-heading">A weekly reading habit.</h2>
+            <p id="coverage-summary"></p>
+            <dl>
+              <div class="status-row"><dt>Last successful collection</dt><dd id="refresh-date"></dd></div>
+              <div class="status-row"><dt>Refresh target</dt><dd id="cadence"></dd></div>
+              <div class="status-row"><dt>Next target after this refresh</dt><dd id="next-refresh"></dd></div>
+              <div class="status-row"><dt>This copy</dt><dd id="hosting-status"></dd></div>
+              <div class="status-row"><dt>Automation</dt><dd id="automation-status"></dd></div>
+            </dl>
+            <p class="small" id="freshness-note"></p>
+            <a id="workflow-link" target="_blank" rel="noopener noreferrer">Check workflow runs</a>
+            <a id="site-link" target="_blank" rel="noopener noreferrer">Bookmark the Pages URL</a>
+          </section>
+          <section class="side-panel">
+            <p class="eyebrow">The editorial filter</p>
+            <h2>Useful beats loud.</h2>
+            <ul>
+              <li>Require a concrete public-web, agentic-search or deep-research connection in the title or short excerpt.</li>
+              <li>Use publisher timestamps within a rolling seven-day window; reject future and undated entries.</li>
+              <li id="selection-limits"></li>
+              <li>No article scraping, paywall workarounds or paid AI. Feed excerpts are not independent verification.</li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+    </main>
+    <footer class="footer">
+      <span>Grounding Weekly &middot; Public sources, carefully qualified.</span>
+      <span>Website only. No accounts, analytics or messaging delivery.</span>
+    </footer>
+  </div>
+  <template id="story-template">
+    <article class="story">
+      <div class="story-content">
+        <div class="story-tags"><span class="tag accent" data-field="kind"></span><span class="tag" data-field="topic"></span><span class="small muted" data-field="date"></span></div>
+        <h3 data-field="title"></h3>
+        <p class="eyebrow excerpt-label" data-field="excerptLabel"></p>
+        <p class="story-summary" data-field="excerpt"></p>
+        <div class="why"><strong>WHY INCLUDED</strong><p data-field="why"></p></div>
+      </div>
+      <div class="evidence-strip">
+        <div><small>Publisher source</small><a data-field="source-link" target="_blank" rel="noopener noreferrer"></a></div>
+        <div><small>Evidence label</small><span class="status-text" data-field="evidence"></span></div>
+      </div>
+      <details class="story-notes"><summary>Evidence and caveats</summary><p data-field="caveat"></p></details>
+    </article>
+  </template>
+  <script id="briefing-data" type="application/json">{"schemaVersion":2,"currentEditionId":"2026-09-30","lastSuccessfulRefresh":"2026-09-30T06:27:28Z","editions":[{"id":"2026-09-30","date":"2026-09-30","name":"Weekly briefing - 2026-09-30","origin":"collected","outcome":"quiet","refreshedAt":"2026-09-30T06:27:28Z","windowStart":"2026-09-23T03:28:51Z","windowEnd":"2026-09-30T06:27:22Z","coverage":[{"sourceId":"openai","checkedAt":"2026-09-30T06:27:22Z","status":"ok","entries":1238,"eligible":0,"selected":0,"rejected":{"offTopic":16,"outsideWindow":1222},"bytes":755374,"message":"Public feed retrieved and parsed."},{"sourceId":"google","checkedAt":"2026-09-30T06:27:22Z","status":"ok","entries":20,"eligible":0,"selected":0,"rejected":{"offTopic":5,"outsideWindow":15},"bytes":508165,"message":"Public feed retrieved and parsed."},{"sourceId":"microsoft","checkedAt":"2026-09-30T06:27:22Z","status":"ok","entries":10,"eligible":0,"selected":0,"rejected":{"outsideWindow":10},"bytes":194465,"message":"Public feed retrieved and parsed."},{"sourceId":"brave","checkedAt":"2026-09-30T06:27:22Z","status":"ok","entries":10,"eligible":0,"selected":0,"rejected":{"outsideWindow":10},"bytes":146694,"message":"Public feed retrieved and parsed."},{"sourceId":"simon-willison","checkedAt":"2026-09-30T06:27:23Z","status":"ok","entries":30,"eligible":0,"selected":0,"rejected":{"offTopic":18,"outsideWindow":12},"bytes":167176,"message":"Public feed retrieved and parsed."},{"sourceId":"one-useful-thing","checkedAt":"2026-09-30T06:27:24Z","status":"ok","entries":20,"eligible":0,"selected":0,"rejected":{"outsideWindow":20},"bytes":926908,"message":"Public feed retrieved and parsed."},{"sourceId":"ahead-of-ai","checkedAt":"2026-09-30T06:27:24Z","status":"ok","entries":20,"eligible":0,"selected":0,"rejected":{"offTopic":1,"outsideWindow":19},"bytes":2706431,"message":"Public feed retrieved and parsed."},{"sourceId":"interconnects","checkedAt":"2026-09-30T06:27:25Z","status":"ok","entries":20,"eligible":0,"selected":0,"rejected":{"outsideWindow":20},"bytes":539653,"message":"Public feed retrieved and parsed."},{"sourceId":"latent-space","checkedAt":"2026-09-30T06:27:25Z","status":"ok","entries":20,"eligible":0,"selected":0,"rejected":{"offTopic":11,"outsideWindow":9},"bytes":1369493,"message":"Public feed retrieved and parsed."},{"sourceId":"towards-ai","checkedAt":"2026-09-30T06:27:26Z","status":"ok","entries":10,"eligible":0,"selected":0,"rejected":{"offTopic":10},"bytes":174192,"message":"Public feed retrieved and parsed."},{"sourceId":"data-science-collective","checkedAt":"2026-09-30T06:27:26Z","status":"ok","entries":10,"eligible":0,"selected":0,"rejected":{"offTopic":6,"outsideWindow":4},"bytes":110856,"message":"Public feed retrieved and parsed."},{"sourceId":"arxiv-ir","checkedAt":"2026-09-30T06:27:27Z","status":"ok","entries":41,"eligible":0,"selected":0,"rejected":{"offTopic":14,"notNewPreprint":27},"bytes":92126,"message":"Public feed retrieved and parsed.","robotsNote":"No robots.txt published (HTTP 404/410)."}],"items":[]},{"id":"2026-09-29","date":"2026-09-29","name":"The initial, qualified briefing","origin":"curated","outcome":"curated","refreshedAt":null,"windowStart":null,"windowEnd":null,"coverage":[],"items":[{"id":"exa-agent-ultra","sourceId":"exa","kind":"Qualified release","topic":"Deep research","publishedAt":"2026-09-25","title":"Exa introduces Agent Ultra for more exhaustive web research","excerpt":"Exa describes Ultra as its highest-effort research mode, coordinating agents across sources for list-building, entity enrichment and evidence-backed research. The announcement links to documentation and a playground.","excerptLabel":"Seed editorial note - 29 September 2026","matchedTerms":[],"evidence":"Vendor announcement; not independently tested","url":"https://exa.ai/blog/exa-agent-ultra","caveat":"The article's datePublished is 25 September 2026. Exa's WANDR, DeepSearchQA and other comparisons are vendor-reported, not independently proven superiority. The product was not exercised for this briefing."},{"id":"parallel-lovable","sourceId":"parallel","kind":"Available-capability watch","topic":"Web access","publishedAt":null,"title":"Parallel brings live-web capabilities into Lovable","excerpt":"Parallel says its Lovable connector supports web search, deep research, list enrichment and content extraction. Managed Lovable billing or a Parallel API key is required; this does not imply free usage.","excerptLabel":"Seed editorial note - 29 September 2026","matchedTerms":[],"evidence":"Date uncertain; not a new-launch claim","url":"https://parallel.ai/blog/lovable-parallel","caveat":"The blog index displayed 28 September while article JSON-LD stated 13 September 2026. Retained as an available-capability watch item, not a confirmed new launch this week. The integration was not independently tested."}]}],"site":{"title":"Grounding Weekly","url":"https://charanm86.github.io/grounding-weekly/","repository":"https://github.com/charanm86/grounding-weekly","workflow":"https://github.com/charanm86/grounding-weekly/actions/workflows/publish.yml","schedule":{"cron":"30 3 * * 5","timezone":"Asia/Kolkata","label":"Fridays, 09:00 Asia/Kolkata (03:30 UTC)","graceHours":24},"selection":{"windowDays":7,"maxPerSource":2,"maxItems":12},"audienceVerifiedAt":"2026-09-29"},"sources":[{"id":"openai","name":"OpenAI","kind":"Official","url":"https://openai.com/news/","feed":"https://openai.com/news/rss.xml","purpose":"Search tools, grounded answers and deep-research announcements."},{"id":"anthropic","name":"Anthropic","kind":"Official","url":"https://www.anthropic.com/news","purpose":"Claude web search, research capabilities and relevant tool changes.","referenceReason":"No verified publisher feed is configured. Consult the public news page."},{"id":"google","name":"Google Cloud AI","kind":"Official","url":"https://cloud.google.com/blog/products/ai-machine-learning","feed":"https://cloudblog.withgoogle.com/products/ai-machine-learning/rss/","purpose":"Gemini web grounding, search and agent-research features."},{"id":"microsoft","name":"Microsoft Azure","kind":"Official","url":"https://azure.microsoft.com/en-us/blog/","feed":"https://azure.microsoft.com/en-us/blog/feed/","purpose":"Public-web grounding and search-related platform changes."},{"id":"perplexity","name":"Perplexity","kind":"Official","url":"https://www.perplexity.ai/hub/blog","purpose":"Search, research and developer-facing answer-engine releases.","referenceReason":"No verified publisher feed is configured; this page is not scraped."},{"id":"xai","name":"xAI","kind":"Official","url":"https://x.ai/news","purpose":"Web search and research changes with a concrete grounding implication.","referenceReason":"No verified publisher feed is configured; this page is not scraped."},{"id":"exa","name":"Exa","kind":"Search specialist","url":"https://exa.ai/blog","purpose":"Search, extraction, web research and evidence-backed enrichment.","referenceReason":"No verified publisher feed is configured. The qualified September 29 seed remains in the archive."},{"id":"tavily","name":"Tavily","kind":"Search specialist","url":"https://blog.tavily.com/","purpose":"Agent-focused search, extraction and web-access capabilities.","referenceReason":"No verified publisher feed is configured; this page is not scraped."},{"id":"brave","name":"Brave","kind":"Search specialist","url":"https://brave.com/blog/","feed":"https://brave.com/blog/index.xml","purpose":"Search API and grounding changes; exclude unrelated browser news."},{"id":"parallel","name":"Parallel","kind":"Search specialist","url":"https://parallel.ai/blog","purpose":"Search, extraction, research tasks and integrations for agents.","referenceReason":"No verified publisher feed is configured. The seed integration has conflicting publication dates."},{"id":"linkup","name":"Linkup","kind":"Search specialist","url":"https://www.linkup.so/blog","purpose":"Web search, research and retrieval capabilities for AI applications.","referenceReason":"No verified publisher feed is configured; this page is not scraped."},{"id":"artificial-analysis","name":"Artificial Analysis","kind":"Analysis","url":"https://artificialanalysis.ai/","purpose":"Benchmark methodology, model quality, speed and cost context. General intelligence rankings are not direct grounding or citation evaluations.","referenceReason":"Benchmark reference, not an automated news collector."},{"id":"simon-willison","name":"Simon Willison","kind":"Analysis","url":"https://simonwillison.net/","feed":"https://simonwillison.net/atom/everything/","purpose":"Hands-on experiments, practical limitations and source-linked technical analysis."},{"id":"rundown","name":"The Rundown AI","kind":"Newsletter","url":"https://www.therundown.ai/","purpose":"Broad discovery of launches and tools, filtered back to web grounding and search.","audience":"Publisher reports 2,000,000+ newsletter readers.","referenceReason":"No verified publisher feed is configured; newsletter delivery is not used."},{"id":"tldr","name":"TLDR AI","kind":"Newsletter","url":"https://tldr.tech/ai","purpose":"Technical AI news, research and developer tools.","audience":"Publisher reports 1,100,000 AI-newsletter subscribers.","referenceReason":"No verified publisher feed is configured; newsletter delivery is not used."},{"id":"one-useful-thing","name":"One Useful Thing - Ethan Mollick","kind":"Substack","url":"https://www.oneusefulthing.org/","feed":"https://www.oneusefulthing.org/feed","purpose":"Experiments and interpretation of real-world AI and agent capabilities.","audience":"Public page displayed over 480,000 subscribers."},{"id":"ahead-of-ai","name":"Ahead of AI - Sebastian Raschka","kind":"Substack","url":"https://magazine.sebastianraschka.com/","feed":"https://magazine.sebastianraschka.com/feed","purpose":"Technical research explanations and practical implementation perspectives.","audience":"Public page displayed over 217,000 subscribers."},{"id":"interconnects","name":"Interconnects - Nathan Lambert","kind":"Substack","url":"https://www.interconnects.ai/","feed":"https://www.interconnects.ai/feed","purpose":"Model, reasoning and evaluation analysis, only when directly relevant to public-web search.","audience":"Public page displayed over 84,000 subscribers."},{"id":"latent-space","name":"Latent Space","kind":"Substack","url":"https://www.latent.space/","feed":"https://www.latent.space/feed","purpose":"AI engineering, agent systems and practitioner interviews.","audience":"Historical claim of 200,000+ subscriptions across channels, not a current newsletter-only count."},{"id":"the-batch","name":"The Batch - DeepLearning.AI","kind":"Newsletter","url":"https://www.deeplearning.ai/the-batch","purpose":"Research and industry curation. Subscriber count has not been verified.","referenceReason":"No verified publisher feed is configured; this page is not scraped."},{"id":"towards-ai","name":"Towards AI","kind":"Medium","url":"https://pub.towardsai.net/","feed":"https://pub.towardsai.net/feed","purpose":"Practical articles with a direct public-web grounding or agent-research connection.","audience":"Medium follower count has not been verified."},{"id":"data-science-collective","name":"Data Science Collective","kind":"Medium","url":"https://medium.com/data-science-collective","feed":"https://medium.com/feed/data-science-collective","purpose":"Practitioner perspectives; generic internal-document RAG is outside the scope.","audience":"Medium follower count has not been verified."},{"id":"arxiv-ir","name":"arXiv - Information Retrieval","kind":"Research","url":"https://arxiv.org/list/cs.IR/recent","feed":"https://rss.arxiv.org/rss/cs.IR","purpose":"New preprints, labeled as research rather than established product capabilities."},{"id":"hf-papers","name":"Hugging Face Papers","kind":"Research","url":"https://huggingface.co/papers","purpose":"Discover papers and implementations; trending status is not evidence of research quality.","referenceReason":"Reference-only discovery page. No unofficial feed or scraping service is used."}]}</script>
+  <script>(() => {
+  "use strict";
+  const dateFormatter = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "long", year: "numeric", timeZone: "Asia/Kolkata" });
+  const timeFormatter = new Intl.DateTimeFormat("en-GB", { day: "numeric", month: "short", year: "numeric", hour: "2-digit", minute: "2-digit", timeZone: "Asia/Kolkata" });
+  const formatDate = value => dateFormatter.format(new Date(value.length === 10 ? value + "T12:00:00Z" : value));
+  const formatTime = value => timeFormatter.format(new Date(value)) + " IST";
+  const clean = value => String(value ?? "").toLocaleLowerCase("en");
+  const matches = (parts, query) => clean(parts.filter(Boolean).join(" ")).includes(clean(query.trim()));
+
+  function validateUrl(value) {
+    if (typeof value !== "string" || /[\u0000-\u0020\u007f\\]/u.test(value)) throw new Error("Invalid source URL.");
+    const url = new URL(value);
+    if (!["https:", "http:"].includes(url.protocol) || url.username || url.password) throw new Error("Only public HTTP(S) source links are allowed.");
+    if (url.port && !["80", "443"].includes(url.port)) throw new Error("Nonstandard source port.");
+    const host = url.hostname.toLowerCase().replace(/\.+$/u, "");
+    if (!host.includes(".") || host.startsWith("[") || /^[\d.]+$/u.test(host) || /(?:\.local$|\.internal$|\.localhost$)/u.test(host)) throw new Error("Nonpublic source URL.");
+    return url.href;
+  }
+
+  function route(hash, data) {
+    const parts = hash.replace(/^#/u, "").split("/");
+    const view = ["edition", "archive", "sources"].includes(parts[0]) ? parts[0] : "edition";
+    const id = view === "edition" && parts[1] ? parts[1] : data.currentEditionId;
+    const edition = data.editions.find(item => item.id === id);
+    return { view, edition: edition || data.editions.find(item => item.id === data.currentEditionId), missing: !edition };
+  }
+
+  function coverage(edition) {
+    const total = edition.coverage.length;
+    const successful = edition.coverage.filter(item => item.status === "ok").length;
+    return { total, successful, failed: total - successful };
+  }
+
+  function nextFriday(value) {
+    const last = new Date(value);
+    const due = new Date(last);
+    due.setUTCHours(3, 30, 0, 0);
+    due.setUTCDate(due.getUTCDate() + ((5 - due.getUTCDay() + 7) % 7));
+    if (due <= last) due.setUTCDate(due.getUTCDate() + 7);
+    return due;
+  }
+
+  function freshness(data, now = new Date()) {
+    const current = data.editions.find(item => item.id === data.currentEditionId);
+    const health = coverage(current);
+    if (!data.lastSuccessfulRefresh) return { level: "pending", due: null, health, message: "No successful automatic collection has been recorded." };
+    const due = nextFriday(data.lastSuccessfulRefresh);
+    const overdue = now.getTime() > due.getTime() + data.site.schedule.graceHours * 3600000;
+    const counts = `${health.successful}/${health.total} configured collectors succeeded.`;
+    return {
+      level: overdue ? "overdue" : health.failed ? "partial" : "current",
+      due,
+      health,
+      message: `${overdue ? "Refresh overdue. " : health.failed ? "Partial source coverage. " : "Collection is current. "}${counts} Last successful refresh: ${formatTime(data.lastSuccessfulRefresh)}.`,
+    };
+  }
+
+  function editionDescription(edition) {
+    if (edition.origin === "curated") return `${edition.items.length} qualified seed items; a manually prepared snapshot, not a claim of automated source coverage.`;
+    const health = coverage(edition);
+    const lead = edition.items.length ? `${edition.items.length} new-to-this-archive items.` : "Quiet result: no new qualifying items from the successful feeds.";
+    return `${lead} ${health.successful}/${health.total} collectors succeeded${health.failed ? "; coverage is partial" : ""}. Publication window: ${formatTime(edition.windowStart)} to ${formatTime(edition.windowEnd)}. Reference-only sources were not scanned.`;
+  }
+
+  function filterStories(edition, sources, query, filter) {
+    return edition.items.filter(item => (filter === "all" || item.topic === filter) &&
+      matches([item.title, item.excerpt, item.topic, item.kind, sources.get(item.sourceId).name], query));
+  }
+
+  function validateData(data) {
+    if (data.schemaVersion !== 2 || !Array.isArray(data.sources) || !Array.isArray(data.editions) || !data.site) throw new Error("Unsupported or incomplete briefing data.");
+    const sources = new Map(data.sources.map(source => [source.id, source]));
+    if (sources.size !== data.sources.length) throw new Error("Duplicate source identifiers.");
+    for (const source of data.sources) {
+      validateUrl(source.url);
+      if (source.feed) validateUrl(source.feed);
+    }
+    for (const key of ["url", "repository", "workflow"]) validateUrl(data.site[key]);
+    if (!data.editions.some(edition => edition.id === data.currentEditionId)) throw new Error("The current edition is missing.");
+    const ids = new Set();
+    for (const edition of data.editions) {
+      if (ids.has(edition.id) || !/^\d{4}-\d{2}-\d{2}$/u.test(edition.date) || !Array.isArray(edition.items) || !Array.isArray(edition.coverage)) throw new Error("Invalid edition.");
+      ids.add(edition.id);
+      for (const item of edition.items) {
+        if (!sources.has(item.sourceId)) throw new Error("Unknown story source.");
+        validateUrl(item.url);
+      }
+    }
+    if (data.lastSuccessfulRefresh && !Number.isFinite(new Date(data.lastSuccessfulRefresh).getTime())) throw new Error("Invalid refresh timestamp.");
+    return sources;
+  }
+
+  function boot() {
+    const byId = id => document.getElementById(id);
+    const state = { view: "edition", query: "", filter: "all" };
+    let data, edition, sources, latest;
+
+    function element(tag, className, text) {
+      const node = document.createElement(tag);
+      if (className) node.className = className;
+      if (text !== undefined) node.textContent = text;
+      return node;
+    }
+
+    function link(label, url, className) {
+      const node = element("a", className, label);
+      node.href = validateUrl(url);
+      node.target = "_blank";
+      node.rel = "noopener noreferrer";
+      return node;
+    }
+
+    function showEmpty(container, title, explanation, reset = true) {
+      const box = element("div", "empty");
+      box.append(element("h3", "", title), element("p", "", explanation));
+      if (reset) {
+        const button = element("button", "quiet-button", "Clear filters");
+        button.type = "button";
+        button.addEventListener("click", clearFilters);
+        box.append(button);
+      } else {
+        const anchor = element("a", "quiet-button", "See source health");
+        anchor.href = "#sources";
+        box.append(anchor);
+      }
+      container.append(box);
+    }
+
+    function renderStories() {
+      const items = filterStories(edition, sources, state.query, state.filter);
+      const container = byId("story-list");
+      container.replaceChildren();
+      byId("edition-heading").textContent = edition.id === data.currentEditionId ? "This edition" : "Archived edition";
+      byId("edition-count").textContent = `${items.length} of ${edition.items.length} items`;
+      byId("edition-description").textContent = editionDescription(edition);
+      for (const item of items) {
+        const article = byId("story-template").content.firstElementChild.cloneNode(true);
+        const field = name => article.querySelector('[data-field="' + name + '"]');
+        for (const key of ["kind", "topic", "title", "excerptLabel", "excerpt", "evidence", "caveat"]) field(key).textContent = item[key];
+        field("date").textContent = item.publishedAt ? formatDate(item.publishedAt) : "Publication date uncertain";
+        field("why").textContent = item.matchedTerms.length ? "Matched public-web terms: " + item.matchedTerms.join(", ") + "." : "Manually selected seed; the original qualifications are preserved below.";
+        field("source-link").textContent = sources.get(item.sourceId).name + " - read the source";
+        field("source-link").href = validateUrl(item.url);
+        article.dataset.storyId = item.id;
+        container.append(article);
+      }
+      if (!items.length) {
+        const quiet = !edition.items.length;
+        showEmpty(container, quiet ? "A quiet result, not a filler edition" : "No matching stories in this edition",
+          quiet ? "The successful feeds produced no new, in-window items matching the public-web filter. This does not establish that nothing happened; failed and reference-only sources are not covered."
+            : "Try a different topic or shorter search. The archive contains earlier editions.", !quiet);
+      }
+    }
+
+    function sourceStatus(source) {
+      const health = latest.coverage.find(item => item.sourceId === source.id);
+      if (!source.feed) return { label: "Reference only - not collected", detail: source.referenceReason, status: "reference" };
+      if (!health) return { label: "Collector configured - no result recorded", detail: "This snapshot does not contain a collection result for this feed.", status: "pending" };
+      if (health.status !== "ok") return { label: health.status === "blocked" ? "Blocked - not collected" : "Failed - not collected", detail: `${health.message} Checked ${formatTime(health.checkedAt)}.`, status: health.status };
+      const rejected = Object.entries(health.rejected).map(([reason, count]) => `${reason}: ${count}`).join("; ");
+      return { label: "Collected public feed", status: "ok",
+        detail: `${health.entries} entries examined; ${health.eligible} new candidates; ${health.selected} added on this refresh. Checked ${formatTime(health.checkedAt)}.${rejected ? " Excluded: " + rejected + "." : ""}${health.robotsNote ? " " + health.robotsNote : ""}` };
+    }
+
+    function renderSources() {
+      const items = data.sources.filter(source => (state.filter === "all" || source.kind === state.filter) &&
+        matches([source.name, source.kind, source.purpose, source.audience, sourceStatus(source).label], state.query));
+      const container = byId("source-list");
+      container.replaceChildren();
+      byId("sources-count").textContent = `${items.length} of ${data.sources.length} sources`;
+      const configured = data.sources.filter(source => source.feed).length;
+      byId("source-description").textContent = `${configured} configured feed collectors; ${data.sources.length - configured} reference-only sources. Health below describes the latest saved refresh, not the entire catalog.`;
+      byId("source-intro").textContent = `Audience numbers are snapshots verified on ${formatDate(data.site.audienceVerifiedAt)}, not live counters. Readers, subscribers and cross-channel counts are not directly comparable. Public excerpts do not imply paywall or full-article access.`;
+      for (const source of items) {
+        const row = element("article", "source-row");
+        const identity = element("div");
+        identity.append(element("p", "source-kind", source.kind));
+        const title = element("h3");
+        title.append(link(source.name, source.url));
+        identity.append(title);
+        if (source.feed) identity.append(link("Configured public feed", source.feed, "source-feed"));
+        const notes = element("div");
+        notes.append(element("p", "source-purpose", source.purpose));
+        if (source.audience) notes.append(element("p", "source-audience", source.audience));
+        const status = sourceStatus(source);
+        const health = element("p", "source-health");
+        const label = element("span", "health-label", status.label);
+        label.dataset.status = status.status;
+        health.append(label, document.createTextNode(status.detail));
+        notes.append(health);
+        row.append(identity, notes);
+        container.append(row);
+      }
+      if (!items.length) showEmpty(container, "No sources match these filters", "Search by publisher, author, coverage or collection status.");
+    }
+
+    function renderArchive() {
+      const items = data.editions.filter(item => matches([item.name, item.date, formatDate(item.date), editionDescription(item), ...item.items.map(story => story.title)], state.query));
+      const container = byId("archive-list");
+      container.replaceChildren();
+      byId("archive-count").textContent = `${items.length} of ${data.editions.length} editions`;
+      for (const item of items) {
+        const card = element("article", "archive-card");
+        card.append(element("p", "archive-date", formatDate(item.date)));
+        const content = element("div");
+        content.append(element("h3", "", item.name), element("p", "", editionDescription(item)));
+        const anchor = element("a", "quiet-button", "Read this edition");
+        anchor.href = "#edition/" + item.id;
+        content.append(anchor);
+        card.append(content);
+        container.append(card);
+      }
+      if (!items.length) showEmpty(container, "No matching editions", "Search by date, title or a story in the archive.");
+    }
+
+    function render() {
+      byId("clear-search").hidden = !state.query;
+      if (state.view === "sources") renderSources();
+      else if (state.view === "archive") renderArchive();
+      else renderStories();
+    }
+
+    function clearFilters() {
+      state.query = "";
+      state.filter = "all";
+      byId("search").value = "";
+      byId("filter").value = "all";
+      render();
+    }
+
+    function setView() {
+      const selected = route(window.location.hash, data);
+      state.view = selected.view;
+      edition = selected.edition;
+      state.query = "";
+      state.filter = "all";
+      byId("search").value = "";
+      byId("load-error").hidden = !selected.missing;
+      if (selected.missing) byId("load-error").textContent = "That archived edition is not available in this copy. Showing the latest saved edition.";
+      document.querySelectorAll("[data-nav]").forEach(anchor => {
+        if (anchor.dataset.nav === state.view) anchor.setAttribute("aria-current", "page");
+        else anchor.removeAttribute("aria-current");
+      });
+      for (const view of ["edition", "archive", "sources"]) byId(view + "-view").hidden = state.view !== view;
+      const select = byId("filter");
+      select.replaceChildren();
+      const sourceView = state.view === "sources";
+      const all = element("option", "", sourceView ? "All source types" : "All topics");
+      all.value = "all";
+      select.append(all);
+      const values = sourceView ? data.sources.map(source => source.kind) : edition.items.map(item => item.topic);
+      for (const value of [...new Set(values)].sort()) {
+        const option = element("option", "", value);
+        option.value = value;
+        select.append(option);
+      }
+      select.hidden = state.view === "archive";
+      byId("filter-label").hidden = select.hidden;
+      byId("filter-label").textContent = sourceView ? "Source type" : "Topic";
+      byId("search").placeholder = sourceView ? "Search publications, authors or collection status" : state.view === "archive" ? "Search editions, dates or story titles" : "Search stories, topics or publishers";
+      byId("stamp-label").textContent = sourceView ? "Latest collection" : state.view === "archive" ? "Saved history" : edition.id === data.currentEditionId ? "Latest edition" : "Archived edition";
+      byId("stamp-date").textContent = state.view === "archive" ? `${data.editions.length} editions` : formatDate(sourceView ? latest.date : edition.date);
+      byId("stamp-note").textContent = sourceView ? "Collectors and references are labeled separately." : state.view === "archive" ? "Original dates and qualifications preserved." : edition.origin === "curated" ? "Qualified seed; not an automatic refresh." : `${edition.items.length} items. No filler to meet a quota.`;
+      render();
+    }
+
+    function updateStatus() {
+      const status = freshness(data);
+      byId("freshness-banner").dataset.level = status.level;
+      byId("freshness-summary").textContent = status.message;
+      byId("refresh-date").textContent = data.lastSuccessfulRefresh ? formatTime(data.lastSuccessfulRefresh) : "No successful collection recorded";
+      byId("cadence").textContent = data.site.schedule.label;
+      byId("next-refresh").textContent = status.due ? formatTime(status.due.toISOString()) : "After the first successful collection";
+      const references = data.sources.filter(source => !source.feed).length;
+      byId("coverage-summary").textContent = `${status.health.successful}/${status.health.total} collectors succeeded on the latest refresh. ${references} sources are reference-only, not scanned.`;
+      const target = new URL(data.site.url);
+      const hosted = window.location.origin === target.origin && window.location.pathname.startsWith(target.pathname);
+      byId("hosting-status").textContent = hosted ? "Serving at the GitHub Pages URL" : "Local copy; Pages target configured";
+      byId("automation-status").textContent = "Weekly workflow configured; run status linked below";
+      byId("freshness-note").textContent = "The schedule is best effort, not exact-minute delivery. GitHub may delay runs or disable inactive schedules. Failed refreshes keep the last good edition; this copy cannot see later failures. Overdue means a target was missed by more than 24 hours.";
+      byId("workflow-link").href = validateUrl(data.site.workflow);
+      byId("site-link").href = validateUrl(data.site.url);
+      byId("selection-limits").textContent = `At most ${data.site.selection.maxPerSource} items per source and ${data.site.selection.maxItems} per edition. Previously archived URLs or titles are excluded.`;
+    }
+
+    function updateThemeButton() {
+      const dark = document.documentElement.dataset.theme === "dark";
+      byId("theme-toggle").setAttribute("aria-pressed", String(dark));
+      byId("theme-toggle").textContent = dark ? "Light mode" : "Dark mode";
+      byId("theme-toggle").setAttribute("aria-label", dark ? "Switch to light mode" : "Switch to dark mode");
+    }
+
+    try {
+      data = JSON.parse(byId("briefing-data").textContent);
+      sources = validateData(data);
+      latest = data.editions.find(item => item.id === data.currentEditionId);
+      byId("search").addEventListener("input", event => { state.query = event.target.value; render(); });
+      byId("filter").addEventListener("change", event => { state.filter = event.target.value; render(); });
+      byId("clear-search").addEventListener("click", clearFilters);
+      byId("theme-toggle").addEventListener("click", () => {
+        document.documentElement.dataset.theme = document.documentElement.dataset.theme === "dark" ? "light" : "dark";
+        const url = new URL(window.location.href);
+        url.searchParams.set("clawpilotTheme", document.documentElement.dataset.theme);
+        window.history.replaceState(null, "", url);
+        updateThemeButton();
+      });
+      window.addEventListener("hashchange", () => {
+        if (["#main-content", "#update-status"].includes(window.location.hash)) return;
+        setView();
+        byId("main-content").focus({ preventScroll: true });
+      });
+      document.addEventListener("visibilitychange", () => { if (!document.hidden) updateStatus(); });
+      window.setInterval(updateStatus, 60000);
+      updateThemeButton();
+      updateStatus();
+      setView();
+    } catch (error) {
+      console.error("Grounding Weekly could not load its edition:", error);
+      byId("load-error").textContent = "This edition could not be loaded because its data is incomplete or invalid. No refresh has been applied. Check the repository workflow before using this copy.";
+      byId("load-error").hidden = false;
+      byId("freshness-banner").hidden = true;
+      byId("main-content").hidden = true;
+    }
+  }
+
+  if (typeof module !== "undefined" && module.exports) {
+    module.exports = { validateUrl, validateData, route, coverage, nextFriday, freshness, editionDescription, filterStories, matches };
+  }
+  if (typeof document !== "undefined") boot();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,18 @@
+{
+  "title": "Grounding Weekly",
+  "url": "https://charanm86.github.io/grounding-weekly/",
+  "repository": "https://github.com/charanm86/grounding-weekly",
+  "workflow": "https://github.com/charanm86/grounding-weekly/actions/workflows/publish.yml",
+  "schedule": {
+    "cron": "30 3 * * 5",
+    "timezone": "Asia/Kolkata",
+    "label": "Fridays, 09:00 Asia/Kolkata (03:30 UTC)",
+    "graceHours": 24
+  },
+  "selection": {
+    "windowDays": 7,
+    "maxPerSource": 2,
+    "maxItems": 12
+  },
+  "audienceVerifiedAt": "2026-09-29"
+}

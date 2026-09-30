@@ -1,0 +1,92 @@
+name: Publish and refresh
+
+on:
+  push:
+    branches: [main]
+  schedule:
+    - cron: "30 3 * * 5"
+  workflow_dispatch:
+
+permissions: {}
+
+concurrency:
+  group: pages-main
+  cancel-in-progress: false
+
+jobs:
+  build:
+    if: github.repository == 'charanm86/grounding-weekly' && github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          ref: main
+          persist-credentials: false
+          set-safe-directory: false
+          show-progress: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+      - name: Test before making any changes
+        run: |
+          python -m unittest discover -s tests
+          node --test tests/reader.test.cjs
+          python -m scripts.build --check
+          python -m scripts.check_public
+      - name: Collect public feeds and build the same snapshot
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        run: python -m scripts.refresh
+      - name: Validate the exact snapshot to publish
+        run: |
+          python -m scripts.build --check
+          python -m scripts.check_public
+          node tests/browser.cjs
+      - name: Persist successful refresh before deployment
+        if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        env:
+          GH_TOKEN: ${{ github.token }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          git add -- data/state.json site/index.html
+          if ! git diff --cached --quiet; then
+            git -c user.name=charanm86 \
+              -c user.email=124228417+charanm86@users.noreply.github.com \
+              commit -m "Refresh Grounding Weekly public sources" \
+              -m "Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>"
+            auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
+            echo "::add-mask::$auth"
+            git -c "http.https://github.com/.extraheader=AUTHORIZATION: basic $auth" push origin HEAD:main
+          fi
+      - name: Upload only the generated website
+        uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5.0.0
+        with:
+          path: site
+          retention-days: 1
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Check the existing Pages configuration
+        uses: actions/configure-pages@45bfe0192ca1faeb007ade9deae92b16b8254a0d # v6.0.0
+        with:
+          enablement: false
+      - name: Deploy this run's artifact
+        id: deployment
+        uses: actions/deploy-pages@368f82528645a54fb793d4d04e342629a3f51346 # v5.0.1
+        with:
+          timeout: 180000

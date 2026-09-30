@@ -1,0 +1,40 @@
+name: Validate public reader
+
+on:
+  pull_request:
+  push:
+    branches-ignore: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: validate-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    timeout-minutes: 8
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          set-safe-directory: false
+          show-progress: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: "24"
+      - name: Test collection, preservation and reader behavior
+        run: |
+          python -m unittest discover -s tests
+          node --test tests/reader.test.cjs
+      - name: Check reproducibility and public-only content
+        run: |
+          python -m scripts.build --check
+          python -m scripts.check_public
+      - name: Exercise the reader in headless Chrome
+        run: node tests/browser.cjs

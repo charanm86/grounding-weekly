@@ -1,0 +1,202 @@
+[
+  {
+    "id": "openai",
+    "name": "OpenAI",
+    "kind": "Official",
+    "url": "https://openai.com/news/",
+    "feed": "https://openai.com/news/rss.xml",
+    "purpose": "Search tools, grounded answers and deep-research announcements."
+  },
+  {
+    "id": "anthropic",
+    "name": "Anthropic",
+    "kind": "Official",
+    "url": "https://www.anthropic.com/news",
+    "purpose": "Claude web search, research capabilities and relevant tool changes.",
+    "referenceReason": "No verified publisher feed is configured. Consult the public news page."
+  },
+  {
+    "id": "google",
+    "name": "Google Cloud AI",
+    "kind": "Official",
+    "url": "https://cloud.google.com/blog/products/ai-machine-learning",
+    "feed": "https://cloudblog.withgoogle.com/products/ai-machine-learning/rss/",
+    "purpose": "Gemini web grounding, search and agent-research features."
+  },
+  {
+    "id": "microsoft",
+    "name": "Microsoft Azure",
+    "kind": "Official",
+    "url": "https://azure.microsoft.com/en-us/blog/",
+    "feed": "https://azure.microsoft.com/en-us/blog/feed/",
+    "purpose": "Public-web grounding and search-related platform changes."
+  },
+  {
+    "id": "perplexity",
+    "name": "Perplexity",
+    "kind": "Official",
+    "url": "https://www.perplexity.ai/hub/blog",
+    "purpose": "Search, research and developer-facing answer-engine releases.",
+    "referenceReason": "No verified publisher feed is configured; this page is not scraped."
+  },
+  {
+    "id": "xai",
+    "name": "xAI",
+    "kind": "Official",
+    "url": "https://x.ai/news",
+    "purpose": "Web search and research changes with a concrete grounding implication.",
+    "referenceReason": "No verified publisher feed is configured; this page is not scraped."
+  },
+  {
+    "id": "exa",
+    "name": "Exa",
+    "kind": "Search specialist",
+    "url": "https://exa.ai/blog",
+    "purpose": "Search, extraction, web research and evidence-backed enrichment.",
+    "referenceReason": "No verified publisher feed is configured. The qualified September 29 seed remains in the archive."
+  },
+  {
+    "id": "tavily",
+    "name": "Tavily",
+    "kind": "Search specialist",
+    "url": "https://blog.tavily.com/",
+    "purpose": "Agent-focused search, extraction and web-access capabilities.",
+    "referenceReason": "No verified publisher feed is configured; this page is not scraped."
+  },
+  {
+    "id": "brave",
+    "name": "Brave",
+    "kind": "Search specialist",
+    "url": "https://brave.com/blog/",
+    "feed": "https://brave.com/blog/index.xml",
+    "purpose": "Search API and grounding changes; exclude unrelated browser news."
+  },
+  {
+    "id": "parallel",
+    "name": "Parallel",
+    "kind": "Search specialist",
+    "url": "https://parallel.ai/blog",
+    "purpose": "Search, extraction, research tasks and integrations for agents.",
+    "referenceReason": "No verified publisher feed is configured. The seed integration has conflicting publication dates."
+  },
+  {
+    "id": "linkup",
+    "name": "Linkup",
+    "kind": "Search specialist",
+    "url": "https://www.linkup.so/blog",
+    "purpose": "Web search, research and retrieval capabilities for AI applications.",
+    "referenceReason": "No verified publisher feed is configured; this page is not scraped."
+  },
+  {
+    "id": "artificial-analysis",
+    "name": "Artificial Analysis",
+    "kind": "Analysis",
+    "url": "https://artificialanalysis.ai/",
+    "purpose": "Benchmark methodology, model quality, speed and cost context. General intelligence rankings are not direct grounding or citation evaluations.",
+    "referenceReason": "Benchmark reference, not an automated news collector."
+  },
+  {
+    "id": "simon-willison",
+    "name": "Simon Willison",
+    "kind": "Analysis",
+    "url": "https://simonwillison.net/",
+    "feed": "https://simonwillison.net/atom/everything/",
+    "purpose": "Hands-on experiments, practical limitations and source-linked technical analysis."
+  },
+  {
+    "id": "rundown",
+    "name": "The Rundown AI",
+    "kind": "Newsletter",
+    "url": "https://www.therundown.ai/",
+    "purpose": "Broad discovery of launches and tools, filtered back to web grounding and search.",
+    "audience": "Publisher reports 2,000,000+ newsletter readers.",
+    "referenceReason": "No verified publisher feed is configured; newsletter delivery is not used."
+  },
+  {
+    "id": "tldr",
+    "name": "TLDR AI",
+    "kind": "Newsletter",
+    "url": "https://tldr.tech/ai",
+    "purpose": "Technical AI news, research and developer tools.",
+    "audience": "Publisher reports 1,100,000 AI-newsletter subscribers.",
+    "referenceReason": "No verified publisher feed is configured; newsletter delivery is not used."
+  },
+  {
+    "id": "one-useful-thing",
+    "name": "One Useful Thing - Ethan Mollick",
+    "kind": "Substack",
+    "url": "https://www.oneusefulthing.org/",
+    "feed": "https://www.oneusefulthing.org/feed",
+    "purpose": "Experiments and interpretation of real-world AI and agent capabilities.",
+    "audience": "Public page displayed over 480,000 subscribers."
+  },
+  {
+    "id": "ahead-of-ai",
+    "name": "Ahead of AI - Sebastian Raschka",
+    "kind": "Substack",
+    "url": "https://magazine.sebastianraschka.com/",
+    "feed": "https://magazine.sebastianraschka.com/feed",
+    "purpose": "Technical research explanations and practical implementation perspectives.",
+    "audience": "Public page displayed over 217,000 subscribers."
+  },
+  {
+    "id": "interconnects",
+    "name": "Interconnects - Nathan Lambert",
+    "kind": "Substack",
+    "url": "https://www.interconnects.ai/",
+    "feed": "https://www.interconnects.ai/feed",
+    "purpose": "Model, reasoning and evaluation analysis, only when directly relevant to public-web search.",
+    "audience": "Public page displayed over 84,000 subscribers."
+  },
+  {
+    "id": "latent-space",
+    "name": "Latent Space",
+    "kind": "Substack",
+    "url": "https://www.latent.space/",
+    "feed": "https://www.latent.space/feed",
+    "purpose": "AI engineering, agent systems and practitioner interviews.",
+    "audience": "Historical claim of 200,000+ subscriptions across channels, not a current newsletter-only count."
+  },
+  {
+    "id": "the-batch",
+    "name": "The Batch - DeepLearning.AI",
+    "kind": "Newsletter",
+    "url": "https://www.deeplearning.ai/the-batch",
+    "purpose": "Research and industry curation. Subscriber count has not been verified.",
+    "referenceReason": "No verified publisher feed is configured; this page is not scraped."
+  },
+  {
+    "id": "towards-ai",
+    "name": "Towards AI",
+    "kind": "Medium",
+    "url": "https://pub.towardsai.net/",
+    "feed": "https://pub.towardsai.net/feed",
+    "purpose": "Practical articles with a direct public-web grounding or agent-research connection.",
+    "audience": "Medium follower count has not been verified."
+  },
+  {
+    "id": "data-science-collective",
+    "name": "Data Science Collective",
+    "kind": "Medium",
+    "url": "https://medium.com/data-science-collective",
+    "feed": "https://medium.com/feed/data-science-collective",
+    "purpose": "Practitioner perspectives; generic internal-document RAG is outside the scope.",
+    "audience": "Medium follower count has not been verified."
+  },
+  {
+    "id": "arxiv-ir",
+    "name": "arXiv - Information Retrieval",
+    "kind": "Research",
+    "url": "https://arxiv.org/list/cs.IR/recent",
+    "feed": "https://rss.arxiv.org/rss/cs.IR",
+    "purpose": "New preprints, labeled as research rather than established product capabilities."
+  },
+  {
+    "id": "hf-papers",
+    "name": "Hugging Face Papers",
+    "kind": "Research",
+    "url": "https://huggingface.co/papers",
+    "purpose": "Discover papers and implementations; trending status is not evidence of research quality.",
+    "referenceReason": "Reference-only discovery page. No unofficial feed or scraping service is used."
+  }
+]

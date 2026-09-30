@@ -1,0 +1,145 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta http-equiv="Content-Security-Policy" content="@@CSP@@">
+  <meta name="referrer" content="no-referrer">
+  <meta name="description" content="An evidence-first weekly briefing on public-web grounding, agentic search and deep research. Public excerpts, source health and an honest archive.">
+  <link rel="canonical" href="@@CANONICAL@@">
+  <title>Grounding Weekly</title>
+  <script>@@THEME@@</script>
+  <style>@@STYLE@@</style>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to the briefing</a>
+  <div class="shell">
+    <header class="masthead">
+      <a class="brand" href="#edition" aria-label="Grounding Weekly home">
+        <span class="brand-mark" aria-hidden="true">g.</span>
+        <span>Grounding <span class="brand-accent">Weekly</span></span>
+      </a>
+      <nav class="nav" aria-label="Main navigation">
+        <a href="#edition" data-nav="edition" aria-current="page">The briefing</a>
+        <a href="#archive" data-nav="archive">Archive</a>
+        <a href="#sources" data-nav="sources">Sources</a>
+      </nav>
+      <button class="theme-button" id="theme-toggle" type="button" aria-pressed="false">Dark mode</button>
+    </header>
+    <section class="hero" aria-labelledby="page-title">
+      <div>
+        <p class="eyebrow">Web grounding / Agentic search / Deep research</p>
+        <h1 id="page-title">What's new in<br>web-grounded AI.</h1>
+        <p class="hero-copy">The source, the evidence and the caveat stay together. Short public excerpts, not generated news or a headline quota.</p>
+      </div>
+      <div class="edition-stamp">
+        <p class="eyebrow" id="stamp-label">Edition</p>
+        <strong id="stamp-date"></strong>
+        <p class="small muted" id="stamp-note"></p>
+      </div>
+    </section>
+    <div class="freshness-banner" id="freshness-banner" role="status">
+      <span id="freshness-summary"></span>
+      <a href="#update-status">Refresh details</a>
+    </div>
+    <div id="load-error" class="error" role="alert" hidden></div>
+    <noscript><p class="error">Enable JavaScript to browse the briefing, filters and source library. This self-contained reader makes no background requests and needs no external scripts.</p></noscript>
+    <main id="main-content" tabindex="-1">
+      <div class="toolbar">
+        <div class="search-wrap">
+          <label for="search">Search the current view</label>
+          <svg viewBox="0 0 24 24" fill="none" stroke-width="1.7" aria-hidden="true"><circle cx="10.5" cy="10.5" r="6.5"></circle><path d="m16 16 5 5"></path></svg>
+          <input id="search" type="search" placeholder="Search stories, topics or publishers" autocomplete="off" spellcheck="false" aria-controls="view-content">
+          <button id="clear-search" type="button" hidden aria-label="Clear search">Clear</button>
+        </div>
+        <label for="filter" class="eyebrow" id="filter-label">Topic</label>
+        <select id="filter" aria-labelledby="filter-label" aria-controls="view-content"><option value="all">All topics</option></select>
+      </div>
+      <div class="layout">
+        <div id="view-content">
+          <section id="edition-view" aria-labelledby="edition-heading">
+            <div class="section-top">
+              <h2 id="edition-heading">This edition</h2>
+              <span class="result-count mono" id="edition-count" role="status" aria-live="polite"></span>
+            </div>
+            <p class="section-description" id="edition-description"></p>
+            <div id="story-list" class="stories"></div>
+          </section>
+          <section id="archive-view" aria-labelledby="archive-heading" hidden>
+            <div class="section-top">
+              <h2 id="archive-heading">The archive</h2>
+              <span class="result-count mono" id="archive-count" role="status" aria-live="polite"></span>
+            </div>
+            <p class="section-description">Saved editions, including quiet weeks. Dates and source health belong to each snapshot; old stories are not announced again. Same-day refreshes update one edition.</p>
+            <div id="archive-list" class="stories"></div>
+          </section>
+          <section id="sources-view" aria-labelledby="sources-heading" hidden>
+            <div class="section-top">
+              <h2 id="sources-heading">The source library</h2>
+              <span class="result-count mono" id="sources-count" role="status" aria-live="polite"></span>
+            </div>
+            <p class="section-description" id="source-description"></p>
+            <div class="source-intro" id="source-intro"></div>
+            <div id="source-list" class="source-list"></div>
+          </section>
+        </div>
+        <aside class="sidebar" aria-label="Reading notes and refresh status">
+          <section class="side-panel">
+            <p class="eyebrow">Benchmark reference</p>
+            <h2>Look beyond the leaderboard.</h2>
+            <p>Artificial Analysis adds model-quality, speed and pricing context. General intelligence rankings are not direct evaluations of web grounding or citation accuracy.</p>
+            <a href="https://artificialanalysis.ai/" target="_blank" rel="noopener noreferrer">Explore Artificial Analysis</a>
+          </section>
+          <section class="side-panel" id="update-status" aria-labelledby="update-heading">
+            <p class="eyebrow">Refresh status</p>
+            <h2 id="update-heading">A weekly reading habit.</h2>
+            <p id="coverage-summary"></p>
+            <dl>
+              <div class="status-row"><dt>Last successful collection</dt><dd id="refresh-date"></dd></div>
+              <div class="status-row"><dt>Refresh target</dt><dd id="cadence"></dd></div>
+              <div class="status-row"><dt>Next target after this refresh</dt><dd id="next-refresh"></dd></div>
+              <div class="status-row"><dt>This copy</dt><dd id="hosting-status"></dd></div>
+              <div class="status-row"><dt>Automation</dt><dd id="automation-status"></dd></div>
+            </dl>
+            <p class="small" id="freshness-note"></p>
+            <a id="workflow-link" target="_blank" rel="noopener noreferrer">Check workflow runs</a>
+            <a id="site-link" target="_blank" rel="noopener noreferrer">Bookmark the Pages URL</a>
+          </section>
+          <section class="side-panel">
+            <p class="eyebrow">The editorial filter</p>
+            <h2>Useful beats loud.</h2>
+            <ul>
+              <li>Require a concrete public-web, agentic-search or deep-research connection in the title or short excerpt.</li>
+              <li>Use publisher timestamps within a rolling seven-day window; reject future and undated entries.</li>
+              <li id="selection-limits"></li>
+              <li>No article scraping, paywall workarounds or paid AI. Feed excerpts are not independent verification.</li>
+            </ul>
+          </section>
+        </aside>
+      </div>
+    </main>
+    <footer class="footer">
+      <span>Grounding Weekly &middot; Public sources, carefully qualified.</span>
+      <span>Website only. No accounts, analytics or messaging delivery.</span>
+    </footer>
+  </div>
+  <template id="story-template">
+    <article class="story">
+      <div class="story-content">
+        <div class="story-tags"><span class="tag accent" data-field="kind"></span><span class="tag" data-field="topic"></span><span class="small muted" data-field="date"></span></div>
+        <h3 data-field="title"></h3>
+        <p class="eyebrow excerpt-label" data-field="excerptLabel"></p>
+        <p class="story-summary" data-field="excerpt"></p>
+        <div class="why"><strong>WHY INCLUDED</strong><p data-field="why"></p></div>
+      </div>
+      <div class="evidence-strip">
+        <div><small>Publisher source</small><a data-field="source-link" target="_blank" rel="noopener noreferrer"></a></div>
+        <div><small>Evidence label</small><span class="status-text" data-field="evidence"></span></div>
+      </div>
+      <details class="story-notes"><summary>Evidence and caveats</summary><p data-field="caveat"></p></details>
+    </article>
+  </template>
+  <script id="briefing-data" type="application/json">@@DATA@@</script>
+  <script>@@APP@@</script>
+</body>
+</html>
