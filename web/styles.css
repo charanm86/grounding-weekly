@@ -108,7 +108,8 @@ h1, h2, h3 { line-height: 1.2; }
 .tag { display: inline-flex; align-items: center; padding: 3px 8px; border-radius: 6px; background: var(--cp-surface-soft); color: var(--cp-text-muted); font-size: 11px; line-height: 1.6; }
 .tag.accent { color: var(--cp-accent); background: var(--cp-accent-soft); }
 .story h3 { font-size: clamp(22px, 2.4vw, 29px); font-weight: 650; letter-spacing: -.035em; margin-bottom: 16px; max-width: 690px; overflow-wrap: anywhere; }
-.excerpt-label { font-size: 10px; margin-bottom: 8px; }
+.summary-block h4 { margin: 0 0 4px; font-size: 14px; line-height: 1.4; }
+.excerpt-label { color: var(--cp-text-muted); font-size: 12px; margin-bottom: 8px; }
 .story-summary { font-size: 16px; color: var(--cp-text-muted); overflow-wrap: anywhere; }
 .why { margin-top: 20px; padding-left: 16px; border-left: 2px solid var(--cp-border-strong); font-size: 14px; }
 .why strong { display: block; margin-bottom: 4px; font-size: 12px; color: var(--cp-accent); }

@@ -4,7 +4,9 @@ An evidence-first weekly briefing on web intelligence: upstream tools, downstrea
 
 **Website:** https://charanm86.github.io/grounding-weekly/
 
-The static reader uses short, explicitly labeled publisher excerpts and public links, not AI-generated news. It keeps archived editions, searchable sources, topic filters, evidence caveats, light/dark themes and collection health. Artificial Analysis is a prominent **reference**, not evidence that a model ranks well on grounding or citations.
+Each article has one visible **Summary** section using its existing concise public-source description. Collected stories are labeled **Publisher RSS/Atom excerpt**; source-summarized archive seeds retain their original dated **Seed editorial note** label, not a claim of verbatim publisher text. The reader does not generate new prose or claim a full-article review.
+
+The static reader keeps public links, archived editions, searchable sources, topic filters, evidence caveats, light/dark themes and collection health. Artificial Analysis is a prominent **reference**, not evidence that a model ranks well on grounding or citations.
 
 ## Setup and operation
 
@@ -20,7 +22,7 @@ node tests/browser.cjs
 python -m http.server 8000 --directory site --bind 127.0.0.1
 ```
 
-`refresh` performs a real public-source collection and builds `site/index.html`. `python -m scripts.build` rebuilds offline from saved data without changing refresh timestamps. `--check` requires the committed reader to match its source of truth. Open the local server in a browser; the HTML also works as a self-contained local file. Set `BROWSER_BIN` to an installed Chromium-family executable if the browser test cannot find one.
+`refresh` performs a real public-source collection and builds `site/index.html`. `python -m scripts.build` rebuilds offline from saved data without changing refresh timestamps. `--check` requires the committed reader to match its source of truth. Open the local server in a browser; the HTML also works as a self-contained local file. Set `BROWSER_BIN` to an installed Chromium-family executable if the browser test cannot find one. Set `READER_URL` to the canonical Pages URL to exercise the hosted reader against the local saved snapshot; offline and synthetic safety checks still run locally.
 
 Only `site/` is uploaded to Pages. Editable inputs are `config/site.json`, `config/sources.json`, `data/state.json`, and `web/`. The single data file contains immutable earlier-date snapshots and their collection health. The September 29, 2026 seed was manually curated; it is explicitly not automated coverage. Exa's September 25 date and vendor-reported benchmarks, and Parallel/Lovable's September 28 index versus September 13 JSON-LD conflict, remain qualified in that archive. Audience-number verification remains September 29, 2026, not the latest refresh date.
 

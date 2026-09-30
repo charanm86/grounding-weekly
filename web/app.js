@@ -136,7 +136,9 @@
       for (const item of items) {
         const article = byId("story-template").content.firstElementChild.cloneNode(true);
         const field = name => article.querySelector('[data-field="' + name + '"]');
-        for (const key of ["kind", "topic", "title", "excerptLabel", "excerpt", "evidence", "caveat"]) field(key).textContent = item[key];
+        for (const key of ["kind", "topic", "title", "excerpt", "evidence", "caveat"]) field(key).textContent = item[key];
+        field("excerptLabel").textContent = item.excerptLabel === "Publisher excerpt"
+          ? "Publisher RSS/Atom excerpt" : item.excerptLabel;
         field("date").textContent = item.publishedAt ? formatDate(item.publishedAt) : "Publication date uncertain";
         const reason = item.topic === "Agent products" ? "First-party agent-product launch wording: " : "Matched web-intelligence signals: ";
         field("why").textContent = item.matchedTerms.length ? reason + item.matchedTerms.join(", ") + "." : "Manually selected seed; the original qualifications are preserved below.";

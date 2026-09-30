@@ -7,6 +7,7 @@ const path = require("node:path");
 const { spawn } = require("node:child_process");
 const { once } = require("node:events");
 const { pathToFileURL } = require("node:url");
+const { filterStories } = require("../web/app.js");
 
 const root = path.resolve(__dirname, "..");
 const html = fs.readFileSync(path.join(root, "site", "index.html"), "utf8");
@@ -91,7 +92,39 @@ async function connect(url) {
   return new Protocol(socket);
 }
 
+async function assertSummaries(protocol, items) {
+  const cards = await protocol.evaluate(`Array.from(document.querySelectorAll('#story-list .story'), article => {
+    const blocks = article.querySelectorAll('.summary-block');
+    const block = blocks[0];
+    const excerpt = article.querySelector('[data-field="excerpt"]')?.textContent;
+    const fields = selector => Array.from(article.querySelectorAll(selector), node => node.textContent);
+    return {
+      id: article.dataset.storyId,
+      blocks: blocks.length,
+      headings: fields('h4'),
+      excerpts: fields('[data-field="excerpt"]'),
+      provenance: fields('[data-field="excerptLabel"]'),
+      visible: Boolean(block) && [block, ...block.querySelectorAll('h4, [data-field]')].filter(node => node.textContent).every(node =>
+        node.getClientRects().length > 0 && getComputedStyle(node).visibility === 'visible'),
+      contained: Boolean(block?.querySelector('[data-field="excerpt"]') && block.querySelector('[data-field="excerptLabel"]')),
+      copies: excerpt ? article.textContent.split(excerpt).length - 1 : 0,
+    };
+  })`);
+  assert.deepEqual(cards, items.map(item => ({
+    id: item.id,
+    blocks: 1,
+    headings: ["Summary"],
+    excerpts: [item.excerpt],
+    provenance: [item.excerptLabel === "Publisher excerpt" ? "Publisher RSS/Atom excerpt" : item.excerptLabel],
+    visible: true,
+    contained: true,
+    copies: item.excerpt ? 1 : 0,
+  })));
+}
+
 async function main() {
+  const requestedUrl = process.env.READER_URL ? new URL(process.env.READER_URL) : null;
+  assert.ok(!requestedUrl || ["http:", "https:"].includes(requestedUrl.protocol), "READER_URL must be an HTTP(S) reader URL.");
   const candidates = process.env.BROWSER_BIN ? [process.env.BROWSER_BIN] : [
     "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe",
     "C:\\Program Files (x86)\\Microsoft\\Edge\\Application\\msedge.exe",
@@ -108,6 +141,8 @@ async function main() {
   server.listen(0, "127.0.0.1");
   await once(server, "listening");
   const base = "http://127.0.0.1:" + server.address().port;
+  const readerUrl = requestedUrl || new URL(base + "/");
+  readerUrl.searchParams.set("clawpilotTheme", "light");
   const profile = fs.mkdtempSync(path.join(os.tmpdir(), "grounding-reader-test-"));
   const args = [
     "--headless=new", "--disable-gpu", "--no-first-run", "--no-default-browser-check",
@@ -139,18 +174,27 @@ async function main() {
     protocol = await connect((await response.json()).webSocketDebuggerUrl);
     for (const command of ["Page.enable", "Runtime.enable", "Log.enable", "Network.enable"]) await protocol.send(command);
     await protocol.send("Emulation.setDeviceMetricsOverride", { width: 1440, height: 1000, deviceScaleFactor: 1, mobile: false });
-    await protocol.send("Page.navigate", { url: base + "/?clawpilotTheme=light" });
+    await protocol.send("Page.navigate", { url: readerUrl.href });
     await protocol.wait("document.readyState === 'complete' && document.getElementById('stamp-date').textContent.length > 0");
     assert.equal(await protocol.evaluate("document.getElementById('load-error').hidden"), true);
     assert.equal(await protocol.evaluate("document.documentElement.dataset.theme"), "light");
     const current = data.editions.find(edition => edition.id === data.currentEditionId);
     assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), current.items.length);
+    await assertSummaries(protocol, current.items);
     for (const topic of new Set(current.items.map(item => item.topic))) {
       await protocol.evaluate(`document.getElementById('filter').value = ${JSON.stringify(topic)}; document.getElementById('filter').dispatchEvent(new Event('change'))`);
       assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), current.items.filter(item => item.topic === topic).length);
       assert.deepEqual(await protocol.evaluate("[...document.querySelectorAll('#story-list [data-field=\"topic\"]')].map(node => node.textContent)"), current.items.filter(item => item.topic === topic).map(item => item.topic));
+      await assertSummaries(protocol, current.items.filter(item => item.topic === topic));
     }
     await protocol.evaluate("document.getElementById('filter').value = 'all'; document.getElementById('filter').dispatchEvent(new Event('change'))");
+    if (current.items.length) {
+      const sources = new Map(data.sources.map(source => [source.id, source]));
+      const publisher = sources.get(current.items[0].sourceId).name;
+      await protocol.evaluate(`document.getElementById('search').value = ${JSON.stringify(publisher)}; document.getElementById('search').dispatchEvent(new Event('input'))`);
+      await assertSummaries(protocol, filterStories(current, sources, publisher, "all"));
+      await protocol.evaluate("document.getElementById('clear-search').click()");
+    }
     assert.ok((await protocol.evaluate("document.getElementById('refresh-date').textContent")).length);
     assert.doesNotMatch(await protocol.evaluate("document.body.innerText"), /Private website preview|Not published|Not scheduled|First edition/u);
     assert.equal(await protocol.evaluate("getComputedStyle(document.querySelector('.brand-mark')).color === getComputedStyle(document.querySelector('.brand-accent')).color"), false);
@@ -164,16 +208,20 @@ async function main() {
     await protocol.evaluate("location.hash = '#edition/" + seed.id + "'");
     await protocol.wait("document.getElementById('edition-heading').textContent === 'Archived edition' || " + JSON.stringify(seed.id === data.currentEditionId));
     assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), seed.items.length);
+    await assertSummaries(protocol, seed.items);
     assert.match(await protocol.evaluate("document.getElementById('story-list').innerText"), /Publication date uncertain/u);
     await protocol.evaluate("document.querySelector('#story-list details summary').click()");
     assert.equal(await protocol.evaluate("document.querySelector('#story-list details').open"), true);
     await protocol.evaluate("document.getElementById('search').value = 'exa'; document.getElementById('search').dispatchEvent(new Event('input'))");
     assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), 1);
+    await assertSummaries(protocol, seed.items.filter(item => item.sourceId === "exa"));
     await protocol.evaluate("document.getElementById('clear-search').click(); document.getElementById('filter').value = 'Web access'; document.getElementById('filter').dispatchEvent(new Event('change'))");
     assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), 1);
+    await assertSummaries(protocol, seed.items.filter(item => item.topic === "Web access"));
     await protocol.evaluate("document.querySelector('[data-nav=\"edition\"]').click()");
     await protocol.wait("document.getElementById('edition-heading').textContent === 'This edition'");
     assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), current.items.length);
+    await assertSummaries(protocol, current.items);
 
     await protocol.evaluate("location.hash = '#sources'");
     await protocol.wait("!document.getElementById('sources-view').hidden");
@@ -191,12 +239,14 @@ async function main() {
     assert.equal(await protocol.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), true);
     await protocol.send("Emulation.setDeviceMetricsOverride", { width: 320, height: 740, deviceScaleFactor: 1, mobile: true });
     assert.equal(await protocol.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), true);
+    await assertSummaries(protocol, seed.items);
     assert.deepEqual(protocol.errors, []);
 
     await protocol.send("Page.navigate", { url: fileUrl + "?clawpilotTheme=light" });
     await protocol.wait("location.protocol === 'file:' && document.readyState === 'complete' && document.getElementById('stamp-date').textContent.length > 0");
     assert.equal(await protocol.evaluate("document.getElementById('load-error').hidden"), true);
     assert.equal(await protocol.evaluate("document.documentElement.scrollWidth <= window.innerWidth"), true);
+    await assertSummaries(protocol, current.items);
     await protocol.evaluate("document.getElementById('theme-toggle').click()");
     assert.equal(await protocol.evaluate("document.documentElement.dataset.theme"), "dark");
     assert.equal(await protocol.evaluate("new URL(location.href).searchParams.get('clawpilotTheme')"), "dark");
@@ -207,6 +257,7 @@ async function main() {
       await protocol.wait(`location.pathname === '/untrusted' && document.readyState === 'complete' && document.querySelector('#story-list [data-field="topic"]')?.textContent === ${JSON.stringify(topic)}`);
       assert.equal(await protocol.evaluate("document.querySelector('#story-list h3').textContent"), payload);
       assert.equal(await protocol.evaluate("document.querySelector('#story-list .story-summary').textContent"), "<b>Publisher text only</b>");
+      await assertSummaries(protocol, JSON.parse(withPayload(false, topic).match(dataPattern)[2]).editions.find(edition => edition.id === data.currentEditionId).items);
       await protocol.evaluate(`document.getElementById('filter').value = ${JSON.stringify(topic)}; document.getElementById('filter').dispatchEvent(new Event('change'))`);
       assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), 1);
       assert.equal(await protocol.evaluate("document.querySelector('#story-list [data-field=\"topic\"]').textContent"), topic);
@@ -220,7 +271,7 @@ async function main() {
     await protocol.wait("document.readyState === 'complete' && !document.getElementById('load-error').hidden");
     assert.equal(await protocol.evaluate("document.getElementById('main-content').hidden"), true);
     assert.equal(await protocol.evaluate("Boolean(window.untrustedRan)"), false);
-    assert.ok(protocol.requests.every(url => url.startsWith(base) || url.startsWith(fileUrl) || url === "about:blank"), "The reader made an external network request.");
+    assert.ok(protocol.requests.every(url => url.startsWith(base) || url.startsWith(fileUrl) || url.startsWith(readerUrl.origin + "/") || url === "about:blank"), "The reader made an unexpected external network request.");
   } finally {
     if (protocol) protocol.close();
     if (browserProtocol) {
@@ -236,7 +287,7 @@ async function main() {
     // Windows may release the browser's profile handles after its main process exits.
     await fs.promises.rm(profile, { recursive: true, force: true, maxRetries: 20, retryDelay: 300 });
   }
-  console.log("Browser checks passed: live data, theme, mobile, archive/home routes, search, filters, evidence, source health, text-only rendering and invalid-data error.");
+  console.log("Browser checks passed: live data, single visible summaries with accurate provenance, theme, mobile, archive/home routes, search, filters, evidence, source health, text-only rendering and invalid-data error.");
 }
 
 main().catch(error => { console.error(error); process.exitCode = 1; });

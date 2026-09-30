@@ -68,6 +68,17 @@ test("upstream infrastructure and downstream applications remain distinct filter
   assert.equal(reader.filterStories(edition, sources, "", "Agent products").length, 0);
 });
 
+test("article template labels one existing description as Summary without adding impact analysis", () => {
+  const template = fs.readFileSync(path.join(root, "web/template.html"), "utf8");
+  const story = template.match(/<template id="story-template">([\s\S]*?)<\/template>/u)[1];
+  assert.equal((story.match(/class="summary-block"/gu) || []).length, 1);
+  assert.equal((story.match(/<h4>Summary<\/h4>/gu) || []).length, 1);
+  assert.equal((story.match(/data-field="excerpt"/gu) || []).length, 1);
+  assert.equal((story.match(/data-field="excerptLabel"/gu) || []).length, 1);
+  const js = fs.readFileSync(path.join(root, "web/app.js"), "utf8");
+  assert.doesNotMatch(template + js, /Web IQ|why it matters|Microsoft (?:impact|strategy)/iu);
+});
+
 test("weekly status distinguishes partial, current, overdue and uncollected", () => {
   const partial = reader.freshness(fixed, new Date("2026-10-02T04:00:00Z"));
   assert.equal(partial.level, "partial");
