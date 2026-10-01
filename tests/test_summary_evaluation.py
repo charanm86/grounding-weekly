@@ -9,7 +9,7 @@ import unittest
 from pathlib import Path
 from unittest.mock import patch
 
-from scripts import build, collector
+from scripts import build, collector, facts_first
 from scripts import evaluate_summaries as evaluation
 
 
@@ -104,10 +104,14 @@ class EvidenceTests(unittest.TestCase):
 
     def test_inputs_are_data_with_one_unchanging_prompt(self):
         context = {key: value for key, value in evaluation.SYNTHETIC.items() if key != "id"}
-        messages = evaluation.messages(context)
-        self.assertEqual(messages[0], {"role": "system", "content": evaluation.PROMPT})
+        document = facts_first.make_document({
+            "context": context, "paperUrl": None, "metadata": {},
+            "editorial": {"evidence": context["qualification"], "caveat": "", "publishedAt": None},
+        })
+        messages = facts_first.messages(document)
+        self.assertEqual(messages[0], {"role": "system", "content": facts_first.SELECTOR_PROMPT})
         self.assertEqual(messages[1]["role"], "user")
-        self.assertEqual(json.loads(messages[1]["content"].split("\n", 1)[1]), context)
+        self.assertEqual(json.loads(messages[1]["content"].split("\n", 1)[1]), facts_first.model_payload(document))
         self.assertEqual(evaluation.hashed(context), evaluation.hashed(dict(reversed(list(context.items())))))
 
     def test_rotated_paper_uses_documented_metadata_without_mutating_story(self):
@@ -198,9 +202,12 @@ class EvaluationTests(unittest.TestCase):
             def fail(*args):
                 raise evaluation.EvaluationError("Synthetic explicit failure.")
             contexts = [{
-                "id": "fixture", "context": {"text": BODY, "title": "Fixture"},
+                "id": f"fixture-{index}",
+                "context": {"text": BODY, "title": "Fixture", "source": "Synthetic publisher", "basis": "Synthetic fixture"},
                 "paperUrl": None, "metadata": {},
-            }] * 6
+                "editorial": {"evidence": "Synthetic evaluation example, never published as news.", "caveat": "", "publishedAt": None},
+            } for index in range(6)]
+            config = dict(config, inputSha256={entry["id"]: evaluation.hashed(entry["context"]) for entry in contexts})
             with tempfile.TemporaryDirectory() as temporary, self.assertRaisesRegex(evaluation.EvaluationError, "explicit failure"):
                 evaluation.evaluate(
                     config, Path(temporary), report,
@@ -216,7 +223,7 @@ class EvaluationTests(unittest.TestCase):
         workflow = (build.ROOT / ".github" / "workflows" / "evaluate-summaries.yml").read_text()
         self.assertIn("branches: [charanm-microsoft-grounding-weekly-hosting]", workflow)
         self.assertIn("github.run_attempt == 1", workflow)
-        self.assertIn("[gguf-evaluation-once]", workflow)
+        self.assertIn("[facts-first-trial-once]", workflow)
         self.assertIn("contents: read", workflow)
         self.assertIn("persist-credentials: false", workflow)
         self.assertIn("env -i", workflow)
