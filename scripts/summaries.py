@@ -57,7 +57,7 @@ def recipe_hash() -> str:
     return hashed({
         "model": MODEL["model"], "revision": MODEL["revision"], "prompt": PROMPT,
         "version": PROMPT_VERSION, "inputTokens": MAX_INPUT_TOKENS, "outputTokens": MAX_OUTPUT_TOKENS,
-        "dtype": "float32", "sampling": False, "threads": 4,
+        "dtype": "float32", "sampling": False, "thinking": False, "threads": 4,
         "dependencies": (ROOT / "config" / "requirements-inference.txt").read_text(encoding="utf-8"),
     })
 
@@ -142,6 +142,7 @@ def validate_output(text: str, context: dict, item: dict) -> None:
     require(isinstance(text, str) and 40 <= len(text) <= 700, "Generated summary exceeds the length bound.")
     require(12 <= len(words(text)) <= 100, "Generated summary must be concise original prose.")
     require(text.endswith((".", "!", "?")) and not text.endswith("..."), "Generated summary is unfinished.")
+    require(len(re.split(r"(?<=[.!?])\s+(?=[A-Z])", text)) <= 3, "Generated summary exceeds three sentences.")
     require(not re.search(r"[<>\n\r]|https?://|^\s*[-*#]|^\s*(?:summary|answer)\s*:", text, re.I), "Generated summary contains formatting/chat artifacts.")
     require(not INSTRUCTIONS.search(text), "Generated summary contains instruction artifacts.")
     from scripts.check_public import problems
@@ -239,6 +240,7 @@ def summarize_state(state: dict, sources: list[dict], results=None, *, model_fn=
         })
     outputs = model_fn(contexts)
     require(isinstance(outputs, list) and len(outputs) == len(contexts), "Model returned an incomplete summary batch.")
+    errors = []
     for index, (context, text) in enumerate(zip(contexts, outputs)):
         item = pending[index] if index < len(pending) else {"excerpt": context["text"], "id": "unseen-input-check"}
         try:
@@ -247,8 +249,10 @@ def summarize_state(state: dict, sources: list[dict], results=None, *, model_fn=
             from scripts.check_public import problems
             if isinstance(text, str) and len(text) <= 700 and not problems("data/summary.json", text) and not INSTRUCTIONS.search(text):
                 print(f"Rejected rewrite candidate {item['id']}: {text}", file=sys.stderr)
-            raise SummaryError(f"{item['id']}: {error}") from error
-        print(f"Rewritten {item['id']}: {text}")
+            errors.append(f"{item['id']}: {error}")
+        else:
+            print(f"Rewritten {item['id']}: {text}")
+    require(not errors, " | ".join(errors))
     for item, context, meta, text in zip(pending, contexts, metadata, outputs):
         item["summary"] = dict(
             meta, status="ready", text=text, storySha256=story_hash(item), recipeSha256=recipe_hash(),
