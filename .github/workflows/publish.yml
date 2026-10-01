@@ -6,6 +6,15 @@ on:
   schedule:
     - cron: "30 3 * * 5"
   workflow_dispatch:
+    inputs:
+      operation:
+        description: "Refresh news, or rewrite only saved stories without changing collection dates"
+        required: true
+        default: refresh
+        type: choice
+        options:
+          - refresh
+          - summary-backfill
 
 permissions: {}
 
@@ -17,7 +26,7 @@ jobs:
   build:
     if: github.repository == 'charanm86/grounding-weekly' && github.ref == 'refs/heads/main'
     runs-on: ubuntu-latest
-    timeout-minutes: 10
+    timeout-minutes: 30
     permissions:
       contents: write
     steps:
@@ -39,12 +48,28 @@ jobs:
           node --test tests/reader.test.cjs
           python -m scripts.build --check
           python -m scripts.check_public
-      - name: Collect public feeds and build the same snapshot
+      - name: Install bounded CPU-only rewriting dependencies
         if: github.event_name == 'schedule' || github.event_name == 'workflow_dispatch'
+        timeout-minutes: 5
+        run: python -m pip install --disable-pip-version-check --no-cache-dir -r config/requirements-inference.txt
+      - name: Collect public feeds and build the same snapshot
+        if: github.event_name == 'schedule' || (github.event_name == 'workflow_dispatch' && inputs.operation != 'summary-backfill')
+        env:
+          GROUNDING_MODEL_DIR: ${{ runner.temp }}/grounding-summary-model
+          HF_HUB_DISABLE_IMPLICIT_TOKEN: "1"
+          HF_HUB_DISABLE_TELEMETRY: "1"
         run: python -m scripts.refresh
+      - name: Rewrite only the saved stories
+        if: github.event_name == 'workflow_dispatch' && inputs.operation == 'summary-backfill'
+        env:
+          GROUNDING_MODEL_DIR: ${{ runner.temp }}/grounding-summary-model
+          HF_HUB_DISABLE_IMPLICIT_TOKEN: "1"
+          HF_HUB_DISABLE_TELEMETRY: "1"
+        run: python -m scripts.summaries --backfill
       - name: Validate the exact snapshot to publish
         run: |
           python -m scripts.build --check
+          python -m scripts.summaries
           python -m scripts.check_public
           node tests/browser.cjs
       - name: Persist successful refresh before deployment
@@ -58,7 +83,7 @@ jobs:
           if ! git diff --cached --quiet; then
             git -c user.name=charanm86 \
               -c user.email=124228417+charanm86@users.noreply.github.com \
-              commit -m "Refresh Grounding Weekly public sources" \
+              commit -m "Persist Grounding Weekly published snapshot" \
               -m "Co-authored-by: Copilot App <223556219+Copilot@users.noreply.github.com>"
             auth="$(printf 'x-access-token:%s' "$GH_TOKEN" | base64 -w0)"
             echo "::add-mask::$auth"

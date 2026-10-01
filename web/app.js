@@ -64,7 +64,24 @@
 
   function filterStories(edition, sources, query, filter) {
     return edition.items.filter(item => (filter === "all" || item.topic === filter) &&
-      matches([item.title, item.excerpt, item.topic, item.kind, sources.get(item.sourceId).name], query));
+      matches([item.title, item.summary?.text, item.excerpt, item.topic, item.kind, sources.get(item.sourceId).name], query));
+  }
+
+  function summaryFor(item) {
+    const labels = {
+      "public-abstract": "AI-rewritten from the public abstract in the arXiv feed",
+      "publisher-feed": "AI-rewritten from the publisher feed description",
+      "editorial-seed": "AI-rewritten from the preserved source-based editorial seed note",
+    };
+    const summary = item.summary;
+    if (summary?.status === "ready" && typeof summary.text === "string" && summary.text.trim() && labels[summary.basis]) {
+      return { text: summary.text, label: labels[summary.basis], ready: true };
+    }
+    return {
+      text: "A rewritten summary is unavailable in this saved snapshot. The original short source text remains in the evidence disclosure.",
+      label: "Rewritten summary unavailable",
+      ready: false,
+    };
   }
 
   function validateData(data) {
@@ -139,6 +156,12 @@
         for (const key of ["kind", "topic", "title", "excerpt", "evidence", "caveat"]) field(key).textContent = item[key];
         field("excerptLabel").textContent = item.excerptLabel === "Publisher excerpt"
           ? "Publisher RSS/Atom excerpt" : item.excerptLabel;
+        const summary = summaryFor(item);
+        field("summary").textContent = summary.text;
+        field("summaryLabel").textContent = summary.label;
+        field("summaryMetadata").textContent = summary.ready
+          ? `Rewritten with ${item.summary.model} (revision ${item.summary.modelRevision}); generated ${formatTime(item.summary.generatedAt)}. Based on ${item.summary.inputChars} characters${item.summary.inputTruncated ? " of bounded feed text, not the entire source" : " of source text"}. Automatic checks are not independent fact verification; read the source and caveats.`
+          : "No excerpt is being presented as an AI rewrite. Check the workflow for a pending or failed summary backfill.";
         field("date").textContent = item.publishedAt ? formatDate(item.publishedAt) : "Publication date uncertain";
         const reason = item.topic === "Agent products" ? "First-party agent-product launch wording: " : "Matched web-intelligence signals: ";
         field("why").textContent = item.matchedTerms.length ? reason + item.matchedTerms.join(", ") + "." : "Manually selected seed; the original qualifications are preserved below.";
@@ -327,7 +350,7 @@
   }
 
   if (typeof module !== "undefined" && module.exports) {
-    module.exports = { validateUrl, validateData, route, coverage, nextFriday, freshness, editionDescription, filterStories, matches };
+    module.exports = { validateUrl, validateData, route, coverage, nextFriday, freshness, editionDescription, filterStories, summaryFor, matches };
   }
   if (typeof document !== "undefined") boot();
 })();

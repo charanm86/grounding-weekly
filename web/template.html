@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta http-equiv="Content-Security-Policy" content="@@CSP@@">
   <meta name="referrer" content="no-referrer">
-  <meta name="description" content="A weekly briefing on web intelligence: upstream search and data tools, downstream agentic applications, research and qualified agent-product launches. Public excerpts and honest source coverage.">
+  <meta name="description" content="A weekly briefing on web intelligence: upstream tools, downstream agents and research. AI-rewritten public-source summaries with original excerpts, evidence and honest coverage.">
   <link rel="canonical" href="@@CANONICAL@@">
   <title>Grounding Weekly</title>
   <script>@@THEME@@</script>
@@ -30,7 +30,7 @@
       <div>
         <p class="eyebrow">Web infrastructure / Agentic applications / Research / Agent products</p>
         <h1 id="page-title">What's new in<br>web intelligence.</h1>
-        <p class="hero-copy">Tools that gather and assess the web. Agents that use it. Public excerpts, evidence and caveats stay together, without a headline quota.</p>
+        <p class="hero-copy">Tools that gather and assess the web. Agents that use it. Rewritten public-source summaries with original evidence and caveats, without a headline quota.</p>
       </div>
       <div class="edition-stamp">
         <p class="eyebrow" id="stamp-label">Edition</p>
@@ -114,7 +114,7 @@
               <li>Thin-teaser first-party launches are labeled Agent products, not confirmed web-search capabilities. Generic AI, SEO and internal-document-only RAG are not enough.</li>
               <li>Use publisher timestamps within a rolling seven-day window; reject future and undated entries.</li>
               <li id="selection-limits"></li>
-              <li>No article scraping, paywall workarounds or paid AI. Feed excerpts are not independent verification.</li>
+              <li>No article scraping, paywall workarounds or paid AI. A small hosted CPU model rewrites public feed evidence or qualified seed notes; a rewrite is not independent verification or a full-article review.</li>
             </ul>
           </section>
         </aside>
@@ -132,8 +132,8 @@
         <h3 data-field="title"></h3>
         <div class="summary-block">
           <h4>Summary</h4>
-          <p class="excerpt-label" data-field="excerptLabel"></p>
-          <p class="story-summary" data-field="excerpt"></p>
+          <p class="excerpt-label" data-field="summaryLabel"></p>
+          <p class="story-summary" data-field="summary"></p>
         </div>
         <div class="why"><strong>WHY INCLUDED</strong><p data-field="why"></p></div>
       </div>
@@ -141,7 +141,13 @@
         <div><small>Publisher source</small><a data-field="source-link" target="_blank" rel="noopener noreferrer"></a></div>
         <div><small>Evidence label</small><span class="status-text" data-field="evidence"></span></div>
       </div>
-      <details class="story-notes"><summary>Evidence and caveats</summary><p data-field="caveat"></p></details>
+      <details class="story-notes">
+        <summary>Source excerpt, evidence and caveats</summary>
+        <p class="excerpt-label" data-field="excerptLabel"></p>
+        <p class="source-excerpt" data-field="excerpt"></p>
+        <p data-field="caveat"></p>
+        <p data-field="summaryMetadata"></p>
+      </details>
     </article>
   </template>
   <script id="briefing-data" type="application/json">@@DATA@@</script>

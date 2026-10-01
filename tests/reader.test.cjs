@@ -68,15 +68,42 @@ test("upstream infrastructure and downstream applications remain distinct filter
   assert.equal(reader.filterStories(edition, sources, "", "Agent products").length, 0);
 });
 
-test("article template labels one existing description as Summary without adding impact analysis", () => {
+test("article template separates rewritten Summary from disclosed original evidence", () => {
   const template = fs.readFileSync(path.join(root, "web/template.html"), "utf8");
   const story = template.match(/<template id="story-template">([\s\S]*?)<\/template>/u)[1];
   assert.equal((story.match(/class="summary-block"/gu) || []).length, 1);
   assert.equal((story.match(/<h4>Summary<\/h4>/gu) || []).length, 1);
   assert.equal((story.match(/data-field="excerpt"/gu) || []).length, 1);
   assert.equal((story.match(/data-field="excerptLabel"/gu) || []).length, 1);
+  assert.equal((story.match(/data-field="summary"/gu) || []).length, 1);
+  assert.match(story, /<details[\s\S]*data-field="excerpt"/u);
   const js = fs.readFileSync(path.join(root, "web/app.js"), "utf8");
   assert.doesNotMatch(template + js, /Web IQ|why it matters|Microsoft (?:impact|strategy)/iu);
+});
+
+test("rewritten-summary bases are explicit and missing or unknown summaries never use excerpts", () => {
+  const item = { ...curated.items[0], excerpt: "The original publisher text must not be the summary.", summary: undefined };
+  assert.equal(reader.summaryFor(item).ready, false);
+  assert.match(reader.summaryFor(item).label, /unavailable/u);
+  assert.notEqual(reader.summaryFor(item).text, item.excerpt);
+  for (const basis of ["public-abstract", "publisher-feed", "editorial-seed"]) {
+    const summary = { status: "ready", text: "A genuinely rewritten description.", basis };
+    assert.equal(reader.summaryFor({ ...item, summary }).text, summary.text);
+    assert.match(reader.summaryFor({ ...item, summary }).label, /^AI-rewritten/u);
+  }
+  for (const summary of [
+    { status: "failed", text: item.excerpt, basis: "publisher-feed" },
+    { status: "ready", text: item.excerpt, basis: "unknown" },
+    { status: "ready", text: "", basis: "publisher-feed" },
+  ]) {
+    assert.equal(reader.summaryFor({ ...item, summary }).ready, false);
+  }
+});
+
+test("search includes stored rewritten prose, not only source snippets", () => {
+  const item = { ...curated.items[0], summary: { text: "A distinct paraphrase about verification." } };
+  assert.equal(reader.filterStories({ ...curated, items: [item] },
+    new Map(data.sources.map(source => [source.id, source])), "distinct paraphrase", "all").length, 1);
 });
 
 test("weekly status distinguishes partial, current, overdue and uncollected", () => {

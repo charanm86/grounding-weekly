@@ -1,0 +1,9 @@
+--index-url https://pypi.org/simple
+--only-binary=:all:
+torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.9.1%2Bcpu-cp313-cp313-manylinux_2_28_x86_64.whl#sha256=39b3dff6d8fba240ae0d1bede4ca11c2531ae3b47329206512d99e17907ff74b ; sys_platform == "linux"
+torch @ https://download-r2.pytorch.org/whl/cpu/torch-2.9.1%2Bcpu-cp313-cp313-win_amd64.whl#sha256=404a7ab2fffaf2ca069e662f331eb46313692b2f1630df2720094284f390ccef ; sys_platform == "win32"
+transformers==4.57.6
+huggingface-hub==0.36.2
+safetensors==0.8.0
+tokenizers==0.22.2
+Jinja2==3.1.6

@@ -13,6 +13,7 @@ from scripts.collector import (
     CollectionError, FIRST_PARTY_KINDS, UTC, canonical_url, classify, collect_bounded, iso, parse_date, story_id, title_key,
 )
 from scripts.check_public import problems
+from scripts.summaries import summarize_state
 
 IST = timezone(timedelta(hours=5, minutes=30))
 
@@ -171,6 +172,7 @@ def refresh(root=ROOT, collect_fn=collect_bounded, clock=lambda: datetime.now(UT
         for _, health in results:
             print(f"{health['sourceId']}: {health['status']} - {health['entries']} entries. {health['message']}")
         state = assemble(previous, settings, sources, results, started, clock())
+        state = summarize_state(state, sources, results)
         page = render(state, settings, sources, root)
         publish_files(state, page, root)
         edition = state["editions"][0]
