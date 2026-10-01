@@ -15,7 +15,6 @@ from datetime import date
 from pathlib import Path
 
 from scripts.collector import canonical_url, parse_date, safe_url, title_key
-from scripts.summaries import validate_summary
 
 ROOT = Path(__file__).resolve().parent.parent
 OUTPUTS = ("data/state.json", "site/index.html")
@@ -104,7 +103,6 @@ def validate_state(state: dict, settings: dict, sources: list[dict]) -> None:
         counts: dict[str, int] = {}
         for item in edition["items"]:
             require(item["sourceId"] in source_ids, "Story references an unknown source.")
-            validate_summary(item, next(source for source in sources if source["id"] == item["sourceId"]))
             for key in ("id", "title", "topic", "kind", "excerptLabel", "evidence", "caveat"):
                 require(isinstance(item.get(key), str) and bool(item[key]), f"Story missing {key}.")
             require(isinstance(item.get("excerpt"), str) and len(item["excerpt"]) <= 240, "Publisher excerpt exceeds 240 characters.")

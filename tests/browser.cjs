@@ -24,11 +24,6 @@ function withPayload(unsafeUrl = false, topic = "Agent products") {
   current.items = [{
     ...seed.items[0], id: "synthetic-rendering-check", title: payload,
     excerpt: "<b>Publisher text only</b>", excerptLabel: "Publisher excerpt",
-    summary: {
-      status: "ready", text: "<i>Rewritten text only</i>", basis: "publisher-feed",
-      model: "Synthetic test model", modelRevision: "synthetic-fixture",
-      inputChars: 80, inputTruncated: false, generatedAt: data.lastSuccessfulRefresh,
-    },
     topic, matchedTerms: topic === "Agent products" ? ["introducing", "proactive assistant"] : ["public websites", "agent workflow"],
     url: unsafeUrl ? "javascript:window.untrustedRan=true" : "https://example.org/research",
   }];
@@ -101,39 +96,29 @@ async function assertSummaries(protocol, items) {
   const cards = await protocol.evaluate(`Array.from(document.querySelectorAll('#story-list .story'), article => {
     const blocks = article.querySelectorAll('.summary-block');
     const block = blocks[0];
-    const summary = article.querySelector('[data-field="summary"]')?.textContent;
+    const excerpt = article.querySelector('[data-field="excerpt"]')?.textContent;
     const fields = selector => Array.from(article.querySelectorAll(selector), node => node.textContent);
     return {
       id: article.dataset.storyId,
       blocks: blocks.length,
       headings: fields('h4'),
-      summaries: fields('[data-field="summary"]'),
-      provenance: fields('[data-field="summaryLabel"]'),
-      evidence: fields('details [data-field="excerpt"]'),
-      evidenceProvenance: fields('details [data-field="excerptLabel"]'),
+      excerpts: fields('[data-field="excerpt"]'),
+      provenance: fields('[data-field="excerptLabel"]'),
       visible: Boolean(block) && [block, ...block.querySelectorAll('h4, [data-field]')].filter(node => node.textContent).every(node =>
         node.getClientRects().length > 0 && getComputedStyle(node).visibility === 'visible'),
-      contained: Boolean(block?.querySelector('[data-field="summary"]') && block.querySelector('[data-field="summaryLabel"]')),
-      originalDisclosed: !block?.querySelector('[data-field="excerpt"]') && Boolean(article.querySelector('details [data-field="excerpt"]')),
-      copies: summary ? article.textContent.split(summary).length - 1 : 0,
+      contained: Boolean(block?.querySelector('[data-field="excerpt"]') && block.querySelector('[data-field="excerptLabel"]')),
+      copies: excerpt ? article.textContent.split(excerpt).length - 1 : 0,
     };
   })`);
   assert.deepEqual(cards, items.map(item => ({
     id: item.id,
     blocks: 1,
     headings: ["Summary"],
-    summaries: [item.summary?.text || "A rewritten summary is unavailable in this saved snapshot. The original short source text remains in the evidence disclosure."],
-    provenance: [{
-      "public-abstract": "AI-rewritten from the public abstract in the arXiv feed",
-      "publisher-feed": "AI-rewritten from the publisher feed description",
-      "editorial-seed": "AI-rewritten from the preserved source-based editorial seed note",
-    }[item.summary?.basis] || "Rewritten summary unavailable"],
-    evidence: [item.excerpt],
-    evidenceProvenance: [item.excerptLabel === "Publisher excerpt" ? "Publisher RSS/Atom excerpt" : item.excerptLabel],
+    excerpts: [item.excerpt],
+    provenance: [item.excerptLabel === "Publisher excerpt" ? "Publisher RSS/Atom excerpt" : item.excerptLabel],
     visible: true,
     contained: true,
-    originalDisclosed: true,
-    copies: 1,
+    copies: item.excerpt ? 1 : 0,
   })));
 }
 
@@ -271,14 +256,13 @@ async function main() {
       await protocol.send("Page.navigate", { url: base + "/untrusted?clawpilotTheme=dark&topic=" + encodeURIComponent(topic) });
       await protocol.wait(`location.pathname === '/untrusted' && document.readyState === 'complete' && document.querySelector('#story-list [data-field="topic"]')?.textContent === ${JSON.stringify(topic)}`);
       assert.equal(await protocol.evaluate("document.querySelector('#story-list h3').textContent"), payload);
-      assert.equal(await protocol.evaluate("document.querySelector('#story-list .story-summary').textContent"), "<i>Rewritten text only</i>");
-      assert.equal(await protocol.evaluate("document.querySelector('#story-list .source-excerpt').textContent"), "<b>Publisher text only</b>");
+      assert.equal(await protocol.evaluate("document.querySelector('#story-list .story-summary').textContent"), "<b>Publisher text only</b>");
       await assertSummaries(protocol, JSON.parse(withPayload(false, topic).match(dataPattern)[2]).editions.find(edition => edition.id === data.currentEditionId).items);
       await protocol.evaluate(`document.getElementById('filter').value = ${JSON.stringify(topic)}; document.getElementById('filter').dispatchEvent(new Event('change'))`);
       assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list .story').length"), 1);
       assert.equal(await protocol.evaluate("document.querySelector('#story-list [data-field=\"topic\"]').textContent"), topic);
       assert.match(await protocol.evaluate("document.querySelector('#story-list [data-field=\"why\"]').textContent"), topic === "Agent products" ? /^First-party agent-product launch wording:/u : /^Matched web-intelligence signals:/u);
-      assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list img, #story-list script, #story-list b, #story-list i').length"), 0);
+      assert.equal(await protocol.evaluate("document.querySelectorAll('#story-list img, #story-list script, #story-list b').length"), 0);
       assert.equal(await protocol.evaluate("Boolean(window.untrustedRan)"), false);
       assert.deepEqual(protocol.errors, []);
     }

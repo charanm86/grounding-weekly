@@ -4,17 +4,18 @@ An evidence-first weekly briefing on web intelligence: upstream tools, downstrea
 
 **Website:** https://charanm86.github.io/grounding-weekly/
 
-Each article's **Summary** is an original AI rewrite, separate from its short source excerpt. Its label identifies the actual basis: a public abstract in the arXiv feed, a publisher RSS/Atom description, or a preserved qualified editorial seed note. Original short excerpts and seed-note labels stay inside **Source excerpt, evidence and caveats**. This is not a full-article review or independent verification. Missing rewrites are explicitly unavailable, never replaced with excerpts under an AI label.
+Each article has one visible **Summary** section using its existing concise public-source description. Collected stories are labeled **Publisher RSS/Atom excerpt**; source-summarized archive seeds retain their original dated **Seed editorial note** label, not a claim of verbatim publisher text. The reader does not generate new prose or claim a full-article review.
 
 The static reader keeps public links, archived editions, searchable sources, topic filters, evidence caveats, light/dark themes and collection health. Artificial Analysis is a prominent **reference**, not evidence that a model ranks well on grounding or citations.
 
 ## Setup and operation
 
-Use Python 3.13; collection, deterministic validation and building use the standard library. CPU rewriting has a separate, optional pinned dependency manifest; ordinary tests and saved-snapshot deployments do not download model weights. Node 24+ and an installed Chrome/Chromium/Edge are used for reader checks, not by the website.
+Use Python 3.13+; the collector and builder use only the standard library. Node 24+ and an installed Chrome/Chromium/Edge are used for reader checks, not by the website.
 
 ```sh
 python -m unittest discover -s tests
 node --test tests/reader.test.cjs
+python -m scripts.refresh
 python -m scripts.build --check
 python -m scripts.check_public
 node tests/browser.cjs
@@ -23,33 +24,17 @@ python -m http.server 8000 --directory site --bind 127.0.0.1
 
 `refresh` performs a real public-source collection and builds `site/index.html`. `python -m scripts.build` rebuilds offline from saved data without changing refresh timestamps. `--check` requires the committed reader to match its source of truth. Open the local server in a browser; the HTML also works as a self-contained local file. Set `BROWSER_BIN` to an installed Chromium-family executable if the browser test cannot find one. Set `READER_URL` to the canonical Pages URL to exercise the hosted reader against the local saved snapshot; offline and synthetic safety checks still run locally.
 
-To rewrite on a supported CPU host, install `config/requirements-inference.txt` in an isolated Python 3.13 environment. `python -m scripts.refresh` collects, selects, rewrites missing items, validates, and atomically persists the data/site. `python -m scripts.summaries --backfill` only rewrites the existing saved story set, without admitting news or advancing collection/edition timestamps. `python -m scripts.summaries` checks that every saved story has a complete rewritten summary.
-
 Only `site/` is uploaded to Pages. Editable inputs are `config/site.json`, `config/sources.json`, `data/state.json`, and `web/`. The single data file contains immutable earlier-date snapshots and their collection health. The September 29, 2026 seed was manually curated; it is explicitly not automated coverage. Exa's September 25 date and vendor-reported benchmarks, and Parallel/Lovable's September 28 index versus September 13 JSON-LD conflict, remain qualified in that archive. Audience-number verification remains September 29, 2026, not the latest refresh date.
 
 ## Pages and Friday refresh
 
 The repository must be public, Actions enabled, and **Settings > Pages > Source** set to **GitHub Actions**. No paid runner, AI API key, external secret or long-lived PAT is required for weekly operation. Initial authorization to publish workflow files is separate from the weekly `GITHUB_TOKEN`.
 
-The `Publish and refresh` workflow runs on `main` pushes, manually through **Actions > Publish and refresh > Run workflow**, and at cron **`30 3 * * 5`**: Friday **09:00 Asia/Kolkata / 03:30 UTC**. Pushes deploy only the saved snapshot, without inference or collection. Scheduled/manual `refresh` runs collect, rewrite, validate, commit and deploy **in the same run**. Select manual operation **summary-backfill** to rewrite only saved stories and preserve all collection dates/health. A commit made with `GITHUB_TOKEN` normally does not trigger another push workflow; deployment does not depend on that. The workflow only runs for this repository's `main` branch. Missing required summaries stop publishing and leave the last deployed site intact; use summary-backfill after a migration, rather than publishing excerpts as rewrites.
+The `Publish and refresh` workflow runs on `main` pushes, manually through **Actions > Publish and refresh > Run workflow**, and at cron **`30 3 * * 5`**: Friday **09:00 Asia/Kolkata / 03:30 UTC**. Pushes deploy the saved snapshot; scheduled/manual runs collect, validate, commit the source data and generated HTML, then deploy **in the same run**. A commit made with `GITHUB_TOKEN` normally does not trigger another push workflow; deployment does not depend on that. The workflow only runs for this repository's `main` branch.
 
 GitHub schedules are **best effort, not exact-minute delivery**. Runs can be delayed or dropped during load; schedules only execute from the default branch, and GitHub can disable public-repository schedules after 60 days of inactivity. Check the linked workflow runs and re-enable a disabled schedule when necessary. The reader calculates overdue status in the browser after the next Friday target plus a 24-hour grace period; it never silently advances the saved successful-refresh time.
 
-Actions use verified official releases pinned by commit, standard public `ubuntu-latest` runners, scoped permissions, serialized publishing and one-day Pages artifacts. The inference-capable build job is bounded to 30 minutes; deploy to five minutes. PR validation has read-only permissions and never collects or deploys. Publisher/model requests run without GitHub credentials; the ephemeral token is provided only to the commit/push step.
-
-## Rewriting model, evidence and limits
-
-The public CPU instruction model is [Qwen3-1.7B](https://huggingface.co/Qwen/Qwen3-1.7B), [Apache-2.0 licensed](https://huggingface.co/Qwen/Qwen3-1.7B/blob/70d244cc86ccca08cf5af4e1e306ecf908b1ad5e/LICENSE), pinned to revision `70d244cc86ccca08cf5af4e1e306ecf908b1ad5e`. All downloaded configuration/tokenizer/license files, shard index and 4.06 GB of safetensors weights have pinned byte sizes and SHA-256 checksums in `config/summary-model.json`. Only these files are downloaded. Model-repository Python and pickle weights are never loaded; inference uses `trust_remote_code=False`, `use_safetensors=True`, local-only loading and no tools.
-
-`config/requirements-inference.txt` pins CPU-only PyTorch 2.9.1, Transformers 4.57.6, Hugging Face Hub 0.36.2, Safetensors 0.8.0, Tokenizers 0.22.2 and Jinja2 3.1.6. No external inference API, account, secret, browser inference or local-machine scheduler is involved. GitHub documents standard public Ubuntu runners as [free, with 4 CPU / 16 GB RAM / 14 GB disk](https://docs.github.com/en/actions/reference/runners/github-hosted-runners). No paid/larger/GPU runner or paid cache is used. Model files live only in runner temporary storage; locally they default to the ignored `.venv/summary-model` directory.
-
-The model uses four CPU threads, float32, non-thinking mode, deterministic decoding, at most 1,800 input tokens and 160 output tokens per item. A batch is capped at twelve items, 60 seconds per generation and a 20-minute hard worker deadline; the weight download is separately bounded to eight minutes. Backfill also checks a synthetic unseen input, which is never admitted as news. Initial summaries require reading the actual generated prose, not treating a similarity score as proof of correctness. The initial Qwen2.5-1.5B candidate fit the hosted resource budget but was rejected for extractive output; its drafts were never published.
-
-Selection still sees only titles and the original 220-character excerpts. A separate **transient** input retains up to 5,000 characters of permitted public RSS/Atom description/content for admitted stories; oversized inputs are cut at a sentence boundary and labeled as bounded. arXiv's feed supplies complete public abstracts; the API is not used when its robots policy disallows access. Seed rewrites use their preserved qualified source-based notes, not invented RSS provenance. No article crawling or access-control workaround is added. A missing/blocked input fails rewriting instead of silently substituting a truncated teaser.
-
-The source is untrusted data, not instructions. Markup, arXiv feed metadata and control characters are cleaned; instruction-like text and contact/credential-like material fail closed. Prompts constrain rewriting to the source and its qualifications, with no outside facts. Checks reject copied passages, excessive phrase overlap, unsupported numbers/names/access claims, boilerplate and unfinished/chat/markup output. **These guards are imperfect and cannot prove factual entailment.** The small model can still omit context or make a subtle mistake; the original evidence and qualifications remain accessible.
-
-Each saved summary records its basis/source URL, bounded input size/hash, story hash, model/revision, recipe/prompt version and generation time. Full source bodies are never committed or logged. Matching saved story/recipe summaries are reused without refetching and rewriting archived news every Friday. Their input hash describes the original frozen evidence, not an assertion that the publisher has not edited it since. A recipe change requires accessible source evidence again. Model, evidence, quality or file-write failures abort before replacing the last good data/site; no excerpt-as-rewrite fallback is allowed.
+Actions use verified official releases pinned by commit (checked September 30, 2026), standard public `ubuntu-latest` runners, 5-10 minute job limits, scoped permissions, serialized publishing and one-day Pages artifacts. PR validation has read-only permissions and never collects or deploys. Publisher requests run without GitHub credentials; the ephemeral token is provided only to the commit/push step.
 
 Do not add branch rules that prevent the workflow's `GITHUB_TOKEN` from committing refreshed data unless you also redesign that persistence step. A rejected/racing push fails before deployment rather than publishing an uncommitted snapshot. Re-run on current `main` after resolving the cause. Confirm the actual Pages deployment run and URL before describing initial hosting as live.
 

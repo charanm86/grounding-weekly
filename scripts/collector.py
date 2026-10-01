@@ -29,7 +29,6 @@ SOURCE_SECONDS = 45
 SOCKET_SECONDS = 10
 MAX_ENTRIES = 2000
 EXCERPT_CHARS = 220
-SUMMARY_INPUT_CHARS = 5000
 TRACKING_KEYS = {"fbclid", "gclid", "dclid", "mc_cid", "mc_eid"}
 ATOM = "{http://www.w3.org/2005/Atom}"
 DC = "{http://purl.org/dc/elements/1.1/}"
@@ -321,8 +320,6 @@ def parse_feed(raw: bytes, source: dict) -> list[dict]:
     for node in nodes:
         title = plain_text(node_text(node, (ATOM + "title",) if atom else ("title",)))[:300]
         raw_excerpt = node_text(node, (ATOM + "summary", ATOM + "content") if atom else ("description", CONTENT + "encoded"))
-        longer = node_text(node, (ATOM + "content",) if atom else (CONTENT + "encoded",))
-        summary_input = max((plain_text(raw_excerpt), plain_text(longer)), key=len)
         raw_date = node_text(node, (ATOM + "published",) if atom else ("pubDate", DC + "date"))
         link = ""
         if atom:
@@ -338,8 +335,6 @@ def parse_feed(raw: bytes, source: dict) -> list[dict]:
         entries.append({
             "title": title,
             "excerpt": excerpt(raw_excerpt),
-            "summaryInput": summary_input[:SUMMARY_INPUT_CHARS],
-            "summaryInputTruncated": len(summary_input) > SUMMARY_INPUT_CHARS,
             "rawDate": raw_date,
             "rawUrl": link,
             "announceType": node_text(node, (ARXIV + "announce_type",)),
@@ -504,7 +499,7 @@ class PublicClient:
         policy = self.robots[origin]
         if not policy.allows(url):
             raise RobotsDenied("Disallowed by the publisher's robots.txt.")
-        delay = max(policy.delay, 3 if parts.hostname == "arxiv.org" or (parts.hostname or "").endswith(".arxiv.org") else 0)
+        delay = policy.delay
         elapsed = time.monotonic() - self.last_request.get(parts.netloc, 0)
         if delay > elapsed:
             wait = delay - elapsed

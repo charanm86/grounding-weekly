@@ -537,9 +537,6 @@ class BuildAndPreservationTests(unittest.TestCase):
         quiet = patch("builtins.print")
         quiet.start()
         self.addCleanup(quiet.stop)
-        summaries = patch.object(refresh, "summarize_state", side_effect=lambda state, sources, results: state)
-        summaries.start()
-        self.addCleanup(summaries.stop)
 
     def assert_preserved(self):
         for name, content in self.originals.items():
