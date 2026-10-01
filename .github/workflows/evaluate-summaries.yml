@@ -1,0 +1,62 @@
+name: Read-only quantized summary evaluation
+
+on:
+  push:
+    branches: [charanm-microsoft-grounding-weekly-hosting]
+    paths:
+      - .github/workflows/evaluate-summaries.yml
+      - config/summary-evaluation.json
+      - scripts/evaluate_summaries.py
+      - tests/test_summary_evaluation.py
+
+permissions:
+  contents: read
+
+concurrency:
+  group: read-only-gguf-evaluation
+  cancel-in-progress: false
+
+jobs:
+  evaluate:
+    if: >-
+      github.repository == 'charanm86/grounding-weekly' &&
+      github.ref == 'refs/heads/charanm-microsoft-grounding-weekly-hosting' &&
+      github.run_attempt == 1 &&
+      contains(github.event.head_commit.message, '[gguf-evaluation-once]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          set-safe-directory: false
+          show-progress: false
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.13"
+      - name: Run deterministic evaluation regressions
+        run: python -m unittest discover -s tests -p test_summary_evaluation.py -q
+      - name: Evaluate exactly one six-input batch without credentials
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "$RUNNER_TEMP/gguf-evaluation/home"
+          env -i PATH="$PATH" HOME="$RUNNER_TEMP/gguf-evaluation/home" LANG=C.UTF-8 \
+            python -m scripts.evaluate_summaries \
+              --work "$RUNNER_TEMP/gguf-evaluation" \
+              --report "$RUNNER_TEMP/gguf-evaluation-report.json"
+      - name: Confirm the saved production snapshot is unchanged
+        if: always()
+        run: |
+          git diff --exit-code
+          python -m scripts.build --check
+          python -m scripts.check_public
+      - name: Retain only bounded drafts and measurements for review
+        if: always()
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: quantized-summary-evaluation
+          path: ${{ runner.temp }}/gguf-evaluation-report.json
+          if-no-files-found: error
+          retention-days: 1
+          compression-level: 6

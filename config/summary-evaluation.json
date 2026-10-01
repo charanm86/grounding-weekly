@@ -1,0 +1,48 @@
+{
+  "purpose": "One read-only six-input evaluation; not the production refresh path",
+  "stateSha256": "2f1b45dce8591b1746313dfcc6441c896a104a8c1b417f4d499822d9e62b6f1b",
+  "model": {
+    "repository": "Qwen/Qwen2.5-7B-Instruct-GGUF",
+    "revision": "bb5d59e06d9551d752d08b292a50eb208b07ab1f",
+    "license": "Apache-2.0",
+    "licenseSha256": "832dd9e00a68dd83b3c3fb9f5588dad7dcf337a0db50f7d9483f310cd292e92e",
+    "quantization": "Q4_K_M",
+    "files": [
+      {
+        "name": "qwen2.5-7b-instruct-q4_k_m-00001-of-00002.gguf",
+        "bytes": 3993201344,
+        "sha256": "dfce12e3862a5283ccfb88221b48480e58745165de856439950d0f22590580db"
+      },
+      {
+        "name": "qwen2.5-7b-instruct-q4_k_m-00002-of-00002.gguf",
+        "bytes": 689872288,
+        "sha256": "539cf93f78e887edea1c04e2d7d8cdaca9d01dae9c9025bcb8accbe29df3d72a"
+      }
+    ]
+  },
+  "runtime": {
+    "repository": "ggml-org/llama.cpp",
+    "release": "b11146",
+    "revision": "7fe450e19305b828c199d602c23a8337aaa1f03b",
+    "license": "MIT",
+    "licenseSha256": "94f29bbed6a22c35b992c5c6ebf0e7c92f13b836b90f36f461c9cf2f0f1d010d",
+    "url": "https://github.com/ggml-org/llama.cpp/releases/download/b11146/llama-b11146-bin-ubuntu-x64.tar.gz",
+    "bytes": 16998357,
+    "sha256": "c150306eb16b5ab696f76a8bdf810c35fd98a24e82158742e6fa28f420ff8410",
+    "directory": "llama-b11146"
+  },
+  "recipe": {
+    "promptVersion": "gguf-evaluation-v1",
+    "threads": 4,
+    "contextTokens": 4096,
+    "maxInputTokens": 1800,
+    "maxOutputTokens": 256,
+    "temperature": 0,
+    "seed": 42,
+    "sourceChars": 5000,
+    "requestSeconds": 180,
+    "downloadSeconds": 480,
+    "totalSeconds": 1500,
+    "workerMemoryGiB": 12
+  }
+}
