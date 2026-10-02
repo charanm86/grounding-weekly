@@ -1,8 +1,188 @@
 {
   "schemaVersion": 2,
-  "currentEditionId": "2026-09-30",
-  "lastSuccessfulRefresh": "2026-09-30T08:58:26Z",
+  "currentEditionId": "2026-10-02",
+  "lastSuccessfulRefresh": "2026-10-02T10:00:08Z",
   "editions": [
+    {
+      "id": "2026-10-02",
+      "date": "2026-10-02",
+      "name": "Weekly briefing - 2026-10-02",
+      "origin": "collected",
+      "outcome": "quiet",
+      "refreshedAt": "2026-10-02T10:00:08Z",
+      "windowStart": "2026-09-25T10:00:01Z",
+      "windowEnd": "2026-10-02T10:00:01Z",
+      "coverage": [
+        {
+          "sourceId": "openai",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 1243,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 13,
+            "alreadyArchived": 1,
+            "outsideWindow": 1229
+          },
+          "bytes": 758460,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "google",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 4,
+            "outsideWindow": 16
+          },
+          "bytes": 538152,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "microsoft",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 4,
+            "outsideWindow": 6
+          },
+          "bytes": 226970,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "brave",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 10
+          },
+          "bytes": 146694,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "simon-willison",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 30,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 14,
+            "outsideWindow": 16
+          },
+          "bytes": 166610,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "one-useful-thing",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 1,
+            "outsideWindow": 19
+          },
+          "bytes": 911449,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "ahead-of-ai",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 1,
+            "outsideWindow": 19
+          },
+          "bytes": 2707555,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "interconnects",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 539653,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "latent-space",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 9,
+            "outsideWindow": 11
+          },
+          "bytes": 1349457,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "towards-ai",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 10
+          },
+          "bytes": 93828,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "data-science-collective",
+          "checkedAt": "2026-10-02T10:00:02Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 6,
+            "outsideWindow": 4
+          },
+          "bytes": 68652,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "arxiv-ir",
+          "checkedAt": "2026-10-02T10:00:03Z",
+          "status": "ok",
+          "entries": 24,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 12,
+            "notNewPreprint": 12
+          },
+          "bytes": 51958,
+          "message": "Public feed retrieved and parsed.",
+          "robotsNote": "No robots.txt published (HTTP 404/410)."
+        }
+      ],
+      "items": []
+    },
     {
       "id": "2026-09-30",
       "date": "2026-09-30",
