@@ -1,8 +1,220 @@
 {
   "schemaVersion": 2,
-  "currentEditionId": "2026-10-02",
-  "lastSuccessfulRefresh": "2026-10-02T10:00:08Z",
+  "currentEditionId": "2026-10-09",
+  "lastSuccessfulRefresh": "2026-10-09T10:51:14Z",
   "editions": [
+    {
+      "id": "2026-10-09",
+      "date": "2026-10-09",
+      "name": "Weekly briefing - 2026-10-09",
+      "origin": "collected",
+      "outcome": "stories",
+      "refreshedAt": "2026-10-09T10:51:14Z",
+      "windowStart": "2026-10-02T10:51:12Z",
+      "windowEnd": "2026-10-09T10:51:12Z",
+      "coverage": [
+        {
+          "sourceId": "openai",
+          "checkedAt": "2026-10-09T10:51:12Z",
+          "status": "ok",
+          "entries": 1259,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 15,
+            "outsideWindow": 1244
+          },
+          "bytes": 767810,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "google",
+          "checkedAt": "2026-10-09T10:51:12Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 2,
+            "outsideWindow": 18
+          },
+          "bytes": 595497,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "microsoft",
+          "checkedAt": "2026-10-09T10:51:12Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 2,
+            "outsideWindow": 8
+          },
+          "bytes": 249590,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "brave",
+          "checkedAt": "2026-10-09T10:51:12Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 10
+          },
+          "bytes": 146694,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "simon-willison",
+          "checkedAt": "2026-10-09T10:51:13Z",
+          "status": "ok",
+          "entries": 30,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 22,
+            "outsideWindow": 8
+          },
+          "bytes": 79859,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "one-useful-thing",
+          "checkedAt": "2026-10-09T10:51:13Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 907151,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "ahead-of-ai",
+          "checkedAt": "2026-10-09T10:51:13Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 2704963,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "interconnects",
+          "checkedAt": "2026-10-09T10:51:13Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 1,
+            "outsideWindow": 19
+          },
+          "bytes": 541942,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "latent-space",
+          "checkedAt": "2026-10-09T10:51:13Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 8,
+            "outsideWindow": 12
+          },
+          "bytes": 1309793,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "towards-ai",
+          "checkedAt": "2026-10-09T10:51:13Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 1,
+          "selected": 1,
+          "rejected": {
+            "offTopic": 9
+          },
+          "bytes": 143848,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "data-science-collective",
+          "checkedAt": "2026-10-09T10:51:13Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 1,
+          "selected": 1,
+          "rejected": {
+            "offTopic": 9
+          },
+          "bytes": 71260,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "arxiv-ir",
+          "checkedAt": "2026-10-09T10:51:13Z",
+          "status": "ok",
+          "entries": 28,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 11,
+            "notNewPreprint": 17
+          },
+          "bytes": 59844,
+          "message": "Public feed retrieved and parsed.",
+          "robotsNote": "No robots.txt published (HTTP 404/410)."
+        }
+      ],
+      "items": [
+        {
+          "id": "3b7fc123f06117cf",
+          "sourceId": "towards-ai",
+          "kind": "Analysis / discovery",
+          "topic": "Web infrastructure",
+          "publishedAt": "2026-10-08T17:01:04Z",
+          "title": "We Connected a WordPress Site to AI Agents Through MCP. Here’s What We Had to Fix",
+          "excerpt": "More than 40% of all websites run on WordPress, according to W3Techs [1]. Over the past year, those sites gained a standard way to work with AI agents. WordPress 6.9 introduced the Abilities API, WordPress 7.0 added...",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "mcp",
+            "websites"
+          ],
+          "evidence": "Publisher excerpt; follow the original evidence",
+          "url": "https://pub.towardsai.net/we-connected-a-wordpress-site-to-ai-agents-through-mcp-heres-what-we-had-to-fix-c1bdca1918f9",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source."
+        },
+        {
+          "id": "d678ac3f444ba905",
+          "sourceId": "data-science-collective",
+          "kind": "Analysis / discovery",
+          "topic": "Evaluation",
+          "publishedAt": "2026-10-06T14:11:34Z",
+          "title": "I Gave an AI Agent Control of an Online Store. What It Did Should Worry Every Business Owner",
+          "excerpt": "I didn’t run this test myself. I went looking for who had — and the actual data is more specific and more useful than a one-off experiment would have been. A year-long benchmark called E-Commerce Bench recently did...",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "benchmark",
+            "online store"
+          ],
+          "evidence": "Publisher excerpt; follow the original evidence",
+          "url": "https://medium.com/data-science-collective/i-gave-an-ai-agent-control-of-an-online-store-what-it-did-should-worry-every-business-owner-b1ae4ac1a8fb",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source."
+        }
+      ]
+    },
     {
       "id": "2026-10-02",
       "date": "2026-10-02",
