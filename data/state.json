@@ -1,8 +1,206 @@
 {
   "schemaVersion": 2,
-  "currentEditionId": "2026-10-16",
-  "lastSuccessfulRefresh": "2026-10-16T08:27:00Z",
+  "currentEditionId": "2026-10-23",
+  "lastSuccessfulRefresh": "2026-10-23T08:47:29Z",
   "editions": [
+    {
+      "id": "2026-10-23",
+      "date": "2026-10-23",
+      "name": "Weekly briefing - 2026-10-23",
+      "origin": "collected",
+      "outcome": "stories",
+      "refreshedAt": "2026-10-23T08:47:29Z",
+      "windowStart": "2026-10-16T08:47:26Z",
+      "windowEnd": "2026-10-23T08:47:26Z",
+      "coverage": [
+        {
+          "sourceId": "openai",
+          "checkedAt": "2026-10-23T08:47:26Z",
+          "status": "ok",
+          "entries": 1316,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 18,
+            "outsideWindow": 1298
+          },
+          "bytes": 801758,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "google",
+          "checkedAt": "2026-10-23T08:47:26Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 9,
+            "outsideWindow": 11
+          },
+          "bytes": 483177,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "microsoft",
+          "checkedAt": "2026-10-23T08:47:26Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 3,
+            "outsideWindow": 7
+          },
+          "bytes": 215575,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "brave",
+          "checkedAt": "2026-10-23T08:47:26Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 10
+          },
+          "bytes": 169860,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "simon-willison",
+          "checkedAt": "2026-10-23T08:47:27Z",
+          "status": "ok",
+          "entries": 30,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 13,
+            "outsideWindow": 17
+          },
+          "bytes": 133227,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "one-useful-thing",
+          "checkedAt": "2026-10-23T08:47:27Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 1,
+            "outsideWindow": 19
+          },
+          "bytes": 921356,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "ahead-of-ai",
+          "checkedAt": "2026-10-23T08:47:27Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 2709355,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "interconnects",
+          "checkedAt": "2026-10-23T08:47:27Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 2,
+            "outsideWindow": 18
+          },
+          "bytes": 556480,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "latent-space",
+          "checkedAt": "2026-10-23T08:47:28Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 9,
+            "outsideWindow": 11
+          },
+          "bytes": 1032266,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "towards-ai",
+          "checkedAt": "2026-10-23T08:47:28Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 10
+          },
+          "bytes": 112243,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "data-science-collective",
+          "checkedAt": "2026-10-23T08:47:28Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 10
+          },
+          "bytes": 41031,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "arxiv-ir",
+          "checkedAt": "2026-10-23T08:47:28Z",
+          "status": "ok",
+          "entries": 33,
+          "eligible": 1,
+          "selected": 1,
+          "rejected": {
+            "offTopic": 17,
+            "notNewPreprint": 15
+          },
+          "bytes": 74254,
+          "message": "Public feed retrieved and parsed.",
+          "robotsNote": "No robots.txt published (HTTP 404/410)."
+        }
+      ],
+      "items": [
+        {
+          "id": "d26e59a1cb2b6340",
+          "sourceId": "arxiv-ir",
+          "kind": "Research / preprint",
+          "topic": "Evaluation",
+          "publishedAt": "2026-10-23T04:00:00Z",
+          "title": "Deep Search in Real-World Web Environments",
+          "excerpt": "arXiv:2610.30181v1 Announce Type: new Abstract: Despite substantial progress in Deep Search agents, their ability to conduct end-to-end research in real-world open Web environments remains insufficiently evaluated....",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "agents",
+            "evaluated",
+            "open web",
+            "research"
+          ],
+          "evidence": "Preprint; peer review not established",
+          "url": "https://arxiv.org/abs/2610.30181",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source. A preprint is research, not a verified product capability or a claim of peer review."
+        }
+      ]
+    },
     {
       "id": "2026-10-16",
       "date": "2026-10-16",
