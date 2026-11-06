@@ -1,8 +1,214 @@
 {
   "schemaVersion": 2,
-  "currentEditionId": "2026-10-30",
-  "lastSuccessfulRefresh": "2026-10-30T10:23:11Z",
+  "currentEditionId": "2026-11-06",
+  "lastSuccessfulRefresh": "2026-11-06T11:23:12Z",
   "editions": [
+    {
+      "id": "2026-11-06",
+      "date": "2026-11-06",
+      "name": "Weekly briefing - 2026-11-06",
+      "origin": "collected",
+      "outcome": "stories",
+      "refreshedAt": "2026-11-06T11:23:12Z",
+      "windowStart": "2026-10-30T11:23:10Z",
+      "windowEnd": "2026-11-06T11:23:10Z",
+      "coverage": [
+        {
+          "sourceId": "openai",
+          "checkedAt": "2026-11-06T11:23:10Z",
+          "status": "ok",
+          "entries": 1366,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 23,
+            "outsideWindow": 1343
+          },
+          "bytes": 831593,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "google",
+          "checkedAt": "2026-11-06T11:23:10Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 6,
+            "outsideWindow": 14
+          },
+          "bytes": 483749,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "microsoft",
+          "checkedAt": "2026-11-06T11:23:10Z",
+          "status": "blocked",
+          "entries": 0,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {},
+          "message": "Disallowed by the publisher's robots.txt."
+        },
+        {
+          "sourceId": "brave",
+          "checkedAt": "2026-11-06T11:23:10Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 10
+          },
+          "bytes": 169860,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "simon-willison",
+          "checkedAt": "2026-11-06T11:23:10Z",
+          "status": "ok",
+          "entries": 30,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 15,
+            "outsideWindow": 15
+          },
+          "bytes": 119092,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "one-useful-thing",
+          "checkedAt": "2026-11-06T11:23:10Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 922268,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "ahead-of-ai",
+          "checkedAt": "2026-11-06T11:23:10Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 2586891,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "interconnects",
+          "checkedAt": "2026-11-06T11:23:11Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 2,
+            "outsideWindow": 18
+          },
+          "bytes": 536043,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "latent-space",
+          "checkedAt": "2026-11-06T11:23:11Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 8,
+            "outsideWindow": 12
+          },
+          "bytes": 1258803,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "towards-ai",
+          "checkedAt": "2026-11-06T11:23:11Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 1,
+          "selected": 1,
+          "rejected": {
+            "offTopic": 9
+          },
+          "bytes": 144999,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "data-science-collective",
+          "checkedAt": "2026-11-06T11:23:11Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 1,
+          "selected": 1,
+          "rejected": {
+            "offTopic": 9
+          },
+          "bytes": 141388,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "arxiv-ir",
+          "checkedAt": "2026-11-06T11:23:11Z",
+          "status": "ok",
+          "entries": 35,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 10,
+            "notNewPreprint": 25
+          },
+          "bytes": 74788,
+          "message": "Public feed retrieved and parsed.",
+          "robotsNote": "No robots.txt published (HTTP 404/410)."
+        }
+      ],
+      "items": [
+        {
+          "id": "b84eb5a86ec43ee3",
+          "sourceId": "towards-ai",
+          "kind": "Analysis / discovery",
+          "topic": "Web grounding",
+          "publishedAt": "2026-11-06T07:50:59Z",
+          "title": "Jev as a Quiet Layer Before the LLM: Building a Prompt-Aware Model Router",
+          "excerpt": "Not every prompt needs the same LLM. A greeting does not need a 120B reasoning model, and a question about today’s exchange rate is useless without web search. In this post I build a small model router where an AI...",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "web search"
+          ],
+          "evidence": "Publisher excerpt; follow the original evidence",
+          "url": "https://pub.towardsai.net/jev-as-a-quiet-layer-before-the-llm-building-a-prompt-aware-model-router-99d33aeb0f3c",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source."
+        },
+        {
+          "id": "6dacfd0f0f411e37",
+          "sourceId": "data-science-collective",
+          "kind": "Analysis / discovery",
+          "topic": "Agentic search",
+          "publishedAt": "2026-11-05T17:54:10Z",
+          "title": "What is Agentic Search?",
+          "excerpt": "And why a 4-search loop costs about 5 times one search Originally published in The AI Engineer . Agentic search is a model searching in a loop: it writes a query, reads the results and picks its next move, whether...",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "agentic search"
+          ],
+          "evidence": "Publisher excerpt; follow the original evidence",
+          "url": "https://medium.com/data-science-collective/what-is-agentic-search-f6aa38d97c0b",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source."
+        }
+      ]
+    },
     {
       "id": "2026-10-30",
       "date": "2026-10-30",
