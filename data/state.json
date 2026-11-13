@@ -1,8 +1,216 @@
 {
   "schemaVersion": 2,
-  "currentEditionId": "2026-11-06",
-  "lastSuccessfulRefresh": "2026-11-06T11:23:12Z",
+  "currentEditionId": "2026-11-13",
+  "lastSuccessfulRefresh": "2026-11-13T11:26:44Z",
   "editions": [
+    {
+      "id": "2026-11-13",
+      "date": "2026-11-13",
+      "name": "Weekly briefing - 2026-11-13",
+      "origin": "collected",
+      "outcome": "stories",
+      "refreshedAt": "2026-11-13T11:26:44Z",
+      "windowStart": "2026-11-06T11:26:43Z",
+      "windowEnd": "2026-11-13T11:26:43Z",
+      "coverage": [
+        {
+          "sourceId": "openai",
+          "checkedAt": "2026-11-13T11:26:43Z",
+          "status": "ok",
+          "entries": 1385,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 17,
+            "outsideWindow": 1368
+          },
+          "bytes": 843067,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "google",
+          "checkedAt": "2026-11-13T11:26:43Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 6,
+            "outsideWindow": 14
+          },
+          "bytes": 502631,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "microsoft",
+          "checkedAt": "2026-11-13T11:26:43Z",
+          "status": "blocked",
+          "entries": 0,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {},
+          "message": "Disallowed by the publisher's robots.txt."
+        },
+        {
+          "sourceId": "brave",
+          "checkedAt": "2026-11-13T11:26:43Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 1,
+          "selected": 1,
+          "rejected": {
+            "offTopic": 2,
+            "outsideWindow": 7
+          },
+          "bytes": 151084,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "simon-willison",
+          "checkedAt": "2026-11-13T11:26:43Z",
+          "status": "ok",
+          "entries": 30,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 18,
+            "outsideWindow": 12
+          },
+          "bytes": 127438,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "one-useful-thing",
+          "checkedAt": "2026-11-13T11:26:43Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 1,
+            "outsideWindow": 19
+          },
+          "bytes": 921345,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "ahead-of-ai",
+          "checkedAt": "2026-11-13T11:26:43Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 2587333,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "interconnects",
+          "checkedAt": "2026-11-13T11:26:43Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 536043,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "latent-space",
+          "checkedAt": "2026-11-13T11:26:44Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 14,
+            "outsideWindow": 6
+          },
+          "bytes": 1105264,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "towards-ai",
+          "checkedAt": "2026-11-13T11:26:44Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 10
+          },
+          "bytes": 115968,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "data-science-collective",
+          "checkedAt": "2026-11-13T11:26:44Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 10
+          },
+          "bytes": 132734,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "arxiv-ir",
+          "checkedAt": "2026-11-13T11:26:44Z",
+          "status": "ok",
+          "entries": 41,
+          "eligible": 1,
+          "selected": 1,
+          "rejected": {
+            "offTopic": 16,
+            "notNewPreprint": 24
+          },
+          "bytes": 90106,
+          "message": "Public feed retrieved and parsed.",
+          "robotsNote": "No robots.txt published (HTTP 404/410)."
+        }
+      ],
+      "items": [
+        {
+          "id": "36085d0b91c85fec",
+          "sourceId": "arxiv-ir",
+          "kind": "Research / preprint",
+          "topic": "Deep research",
+          "publishedAt": "2026-11-13T05:00:00Z",
+          "title": "RMIT-ADM+S at TREC RAG 2026: Research Agents, Retriever Ablations, and Open-Weight Replication",
+          "excerpt": "arXiv:2611.16425v1 Announce Type: new Abstract: We describe the RMIT-ADM+S team's participation in the TREC 2026 Retrieval-Augmented Generation (RAG) track using the ClimbMix corpus. We submitted seven research-agent...",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "research agents"
+          ],
+          "evidence": "Preprint; peer review not established",
+          "url": "https://arxiv.org/abs/2611.16425",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source. A preprint is research, not a verified product capability or a claim of peer review."
+        },
+        {
+          "id": "e6def82bba9edd45",
+          "sourceId": "brave",
+          "kind": "Publisher update",
+          "topic": "Web infrastructure",
+          "publishedAt": "2026-11-12T00:00:00Z",
+          "title": "The Brave Search API now accepts agentic payments via the x402 protocol",
+          "excerpt": "Developers and AI agents can now pay for the Brave Search API on demand with USDC via the open x402 protocol, settling each query in real time without an account or API key.",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "search api",
+            "search-specialist source context"
+          ],
+          "evidence": "Publisher-reported; not independently tested",
+          "url": "https://brave.com/blog/search-api-agentic-payments",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source. Product availability and benchmark comparisons are vendor-reported, not independent verification. Relevance uses the publisher's web-search specialization; agent use is not established by this excerpt."
+        }
+      ]
+    },
     {
       "id": "2026-11-06",
       "date": "2026-11-06",
