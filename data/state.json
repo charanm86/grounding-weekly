@@ -1,8 +1,251 @@
 {
   "schemaVersion": 2,
-  "currentEditionId": "2026-11-13",
-  "lastSuccessfulRefresh": "2026-11-13T11:26:44Z",
+  "currentEditionId": "2026-11-20",
+  "lastSuccessfulRefresh": "2026-11-20T12:03:45Z",
   "editions": [
+    {
+      "id": "2026-11-20",
+      "date": "2026-11-20",
+      "name": "Weekly briefing - 2026-11-20",
+      "origin": "collected",
+      "outcome": "stories",
+      "refreshedAt": "2026-11-20T12:03:45Z",
+      "windowStart": "2026-11-13T12:03:38Z",
+      "windowEnd": "2026-11-20T12:03:38Z",
+      "coverage": [
+        {
+          "sourceId": "openai",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "ok",
+          "entries": 1418,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 30,
+            "outsideWindow": 1388
+          },
+          "bytes": 863009,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "google",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 1,
+          "selected": 1,
+          "rejected": {
+            "offTopic": 5,
+            "outsideWindow": 14
+          },
+          "bytes": 559236,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "microsoft",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "blocked",
+          "entries": 0,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {},
+          "message": "Disallowed by the publisher's robots.txt."
+        },
+        {
+          "sourceId": "brave",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 1,
+          "selected": 1,
+          "rejected": {
+            "outsideWindow": 9
+          },
+          "bytes": 137643,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "simon-willison",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "ok",
+          "entries": 30,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 20,
+            "outsideWindow": 10
+          },
+          "bytes": 127378,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "one-useful-thing",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "outsideWindow": 20
+          },
+          "bytes": 921345,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "ahead-of-ai",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 1,
+            "outsideWindow": 19
+          },
+          "bytes": 2893378,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "interconnects",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 1,
+            "outsideWindow": 19
+          },
+          "bytes": 522948,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "latent-space",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "ok",
+          "entries": 20,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 8,
+            "outsideWindow": 12
+          },
+          "bytes": 925622,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "towards-ai",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 10
+          },
+          "bytes": 126451,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "data-science-collective",
+          "checkedAt": "2026-11-20T12:03:38Z",
+          "status": "ok",
+          "entries": 10,
+          "eligible": 0,
+          "selected": 0,
+          "rejected": {
+            "offTopic": 10
+          },
+          "bytes": 167304,
+          "message": "Public feed retrieved and parsed."
+        },
+        {
+          "sourceId": "arxiv-ir",
+          "checkedAt": "2026-11-20T12:03:39Z",
+          "status": "ok",
+          "entries": 30,
+          "eligible": 2,
+          "selected": 2,
+          "rejected": {
+            "offTopic": 12,
+            "notNewPreprint": 16
+          },
+          "bytes": 69152,
+          "message": "Public feed retrieved and parsed.",
+          "robotsNote": "No robots.txt published (HTTP 404/410)."
+        }
+      ],
+      "items": [
+        {
+          "id": "afdd246a1b49b525",
+          "sourceId": "arxiv-ir",
+          "kind": "Research / preprint",
+          "topic": "Web infrastructure",
+          "publishedAt": "2026-11-20T05:00:00Z",
+          "title": "From Sessions to Serving: Integrating LLM-Based Embeddings into Retrieval for Production Content Recommendation",
+          "excerpt": "arXiv:2611.26096v1 Announce Type: new Abstract: Personalized content recommendation on large marketplace websites must reconcile heterogeneous candidate content (e.g., customer stories, product pages, industry pages...",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "retrieval",
+            "websites"
+          ],
+          "evidence": "Preprint; peer review not established",
+          "url": "https://arxiv.org/abs/2611.26096",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source. A preprint is research, not a verified product capability or a claim of peer review."
+        },
+        {
+          "id": "812725746455505f",
+          "sourceId": "arxiv-ir",
+          "kind": "Research / preprint",
+          "topic": "Evaluation",
+          "publishedAt": "2026-11-20T05:00:00Z",
+          "title": "LINEAGE: A Benchmark for Empirical Lineage Retrieval in AI Scientific Literature",
+          "excerpt": "arXiv:2611.25845v1 Announce Type: new Abstract: Current research agents are moving beyond academic search toward literature synthesis and experiment planning. These workflows increasingly rely on literature retrieval...",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "benchmark",
+            "research agents"
+          ],
+          "evidence": "Preprint; peer review not established",
+          "url": "https://arxiv.org/abs/2611.25845",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source. A preprint is research, not a verified product capability or a claim of peer review."
+        },
+        {
+          "id": "44c6827e1f93012f",
+          "sourceId": "google",
+          "kind": "Publisher update",
+          "topic": "Agent products",
+          "publishedAt": "2026-11-19T17:00:00Z",
+          "title": "Introducing object enrichments: Transform unstructured data into agent-ready context",
+          "excerpt": "The vast majority of enterprise information is unstructured, locked away in object storage as petabytes of images, PDFs, videos, and audio files. This data holds the institutional knowledge AI agents need to do...",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "ai agents",
+            "introducing"
+          ],
+          "evidence": "Publisher-reported; not independently tested",
+          "url": "https://cloud.google.com/blog/products/storage-data-transfer/cost-effective-ai-context-extraction-from-unstructured-gcs-data",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source. Product availability and benchmark comparisons are vendor-reported, not independent verification. Included as an agent-product announcement; this excerpt does not establish web-search or grounding capabilities."
+        },
+        {
+          "id": "c5fbf46f70481d54",
+          "sourceId": "brave",
+          "kind": "Publisher update",
+          "topic": "Web infrastructure",
+          "publishedAt": "2026-11-16T00:00:00Z",
+          "title": "Brave Mini Games: Daily challenges and monthly prizes with Fanon make browsing more fun",
+          "excerpt": "Brave and Fanon are launching Brave Mini Games: eight quick daily challenges on music, movies, and pop culture, powered by the Brave Search API, with hosted trivia parties and monthly prize drawings.",
+          "excerptLabel": "Publisher excerpt",
+          "matchedTerms": [
+            "search api",
+            "search-specialist source context"
+          ],
+          "evidence": "Publisher-reported; not independently tested",
+          "url": "https://brave.com/blog/brave-mini-games",
+          "caveat": "Publication time comes from the feed, not an independent article-date check. Automatic keyword selection can miss relevant items or include marginal ones. Short excerpts omit context; read the source. Product availability and benchmark comparisons are vendor-reported, not independent verification. Relevance uses the publisher's web-search specialization; agent use is not established by this excerpt."
+        }
+      ]
+    },
     {
       "id": "2026-11-13",
       "date": "2026-11-13",
